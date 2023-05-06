@@ -20,6 +20,16 @@ enum ALGS
     DSIF
 };
 
+#define MMB_SIZE 4
+enum MODEL_MULTIPLE_COLUMNS
+{
+    MMC_NUMBER      = 0,
+    MMC_PICTURE     = 3,
+    MMC_NAME        = 1,
+    MMC_LEVEL       = 2
+
+};
+
 
 
 #endif // COMMON_H

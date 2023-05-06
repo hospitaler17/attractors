@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     p = qApp->palette();
     p.setColor(QPalette::Window, QColor(53,53,53));//общий цвет фона
     p.setColor(QPalette::Button, QColor(53,53,53));//общий цвет фона кнопок
-    p.setColor(QPalette::Highlight, QColor(/*0,210,20*/Qt::blue));//Цвет для индикации выделенной или текущей записи
+    p.setColor(QPalette::Highlight, QColor(/*0,210,20*/Qt::green));//Цвет для индикации выделенной или текущей записи
     p.setColor(QPalette::HighlightedText, QColor(255,255,255));//Цвет текста, отличающий его от Highlight. По умолчанию, цвет текста равен Qt::white.
     p.setColor(QPalette::ButtonText, QColor(255,255,255));//Цвет переднего плана, используемый с цветом Button
     p.setColor(QPalette::WindowText, QColor(255,255,255));//Общий цвет переднего плана

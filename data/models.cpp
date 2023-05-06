@@ -29,18 +29,21 @@ void Models::clearMultipleModel()
 void Models::addImage(QImage img, uint level)
 {
     int currentRow = modelMultipleBuild->rowCount();
-
     for(int i = 0; i < MMB_SIZE; ++i)
     {
         if(i == MMC_NUMBER)
         {
-            QStandardItem * newRowCount = new QStandardItem(QString::number(currentRow));
+            QStandardItem * newRowCount = new QStandardItem();
+            newRowCount->setCheckable(true);
+            newRowCount->setCheckState(Qt::Unchecked);
             modelMultipleBuild->setItem(currentRow, MMC_NUMBER, newRowCount);
         }
         else if (i == MMC_PICTURE)
-        {
-            //TODO:сделать хранилище для картинки
-            Q_UNUSED(img);
+        {            //TODO:сделать хранилище для картинки
+//            Q_UNUSED(img);
+            QVariant varImg = QVariant(img);
+            modelMultipleBuild->setData(modelMultipleBuild->index(currentRow, MMC_PICTURE),
+                                        varImg, Qt::DecorationRole);
         }
         else if (i == MMC_NAME)
         {

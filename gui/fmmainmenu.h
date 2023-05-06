@@ -87,6 +87,10 @@ private slots:
 
     void on_cb_multipleBuilding_stateChanged(int arg1);
 
+    void on_pb_remove_all_clicked();
+
+    void on_pb_remove_current_clicked();
+
 signals:
     /// single
     void startSingleAlg(ALGS,uint,uint,uint);

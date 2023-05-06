@@ -23,8 +23,14 @@ fmMainMenu::fmMainMenu(QWidget *parent)
     ui->rb_DSIF->click();
 
     //algChanged(DSIF);
+    on_cb_multipleBuilding_stateChanged(0);
 
     ui->pb_saveToFile->setEnabled(false);
+
+    //TODO: сделать автоматическое смещение окна по изображению
+    ui->cb_autoFindWindow->hide();
+
+
 }
 
 fmMainMenu::~fmMainMenu()
@@ -41,6 +47,11 @@ void fmMainMenu::setData(Data *data)
     initLastWorksSettings();
 
     ui->tableView->setModel(d->getModels()->getMultipleModel());
+//    ui->tableView->hideColumn(MMC_NUMBER);
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->setAutoScroll(true);
+    ui->tableView->setSortingEnabled(true);
+
 
 }
 
@@ -395,6 +406,29 @@ void fmMainMenu::on_cb_multipleBuilding_stateChanged(int arg1)
     else
     {
         slotOnChangeBuildsType(BUILDS_TYPE::MULTIPLE_BUILDS);
+    }
+}
+
+
+void fmMainMenu::on_pb_remove_all_clicked()
+{
+    d->getModels()->getMultipleModel()->removeRows(0,
+                                                   d->getModels()->getMultipleModel()->rowCount());
+}
+
+void fmMainMenu::on_pb_remove_current_clicked()
+{
+    QStandardItemModel * model = d->getModels()->getMultipleModel();
+    QVector<int> indOnDel;
+    for (int i = 0; i <  model->rowCount(); ++i)
+    {
+        if(model->item(i, MMC_NUMBER)->checkState()==Qt::Checked)
+            indOnDel.append(i);
+    }
+
+    for(int i = 0; i < indOnDel.count(); ++i)
+    {
+        model->removeRow(indOnDel.at(i));
     }
 }
 

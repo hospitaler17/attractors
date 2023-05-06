@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "data.h"
+
 // forms
 #include "fmmainmenu.h"
 #include "fmprogressbar.h"

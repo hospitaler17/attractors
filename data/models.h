@@ -6,16 +6,11 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QDateTime>
+#include <QModelIndex>
+#include <QPixmap>
+#include <QImage>
 
-#define MMB_SIZE 4
-enum MODEL_MULTIPLE_COLUMNS
-{
-    MMC_NUMBER      = 0,
-    MMC_PICTURE     = 3,
-    MMC_NAME        = 1,
-    MMC_LEVEL       = 2
-
-};
+#include "common.h"
 
 class Models : public QObject
 {
@@ -33,6 +28,7 @@ private:
     QStandardItemModel * modelMultipleBuild;
 
     void initModel();
+    QList<QPixmap> _images;
 signals:
 
 };
