@@ -1,5 +1,4 @@
 #include "controller.h"
-#include "maintask.h"
 
 Controller::Controller(QObject *parent)
     : QObject{parent}
@@ -9,10 +8,6 @@ Controller::Controller(QObject *parent)
     fmMM = new fmMainMenu();
     fmMM->setData(data);
 
-    fmPB = nullptr;
-
-    fmAV = nullptr;
-
     mainTask = new MainTask();
     mainTask->setData(data);
 }
@@ -21,8 +16,6 @@ Controller::~Controller()
 {
     delete data;
     delete fmMM;
-    if(fmPB) delete fmPB;
-    if(fmAV) delete fmAV;
     delete mainTask;
 }
 
@@ -50,4 +43,22 @@ void Controller::connectFormToTask()
     connect(fmMM,       SIGNAL(startMultipleAlg(ALGS,uint,uint,uint)),
             mainTask,   SLOT(startMultipleAlg(ALGS,uint,uint,uint)));
 
+    connect(fmMM,       SIGNAL(signalOpenPicture(QModelIndex)),
+            this,       SLOT(showPicture(QModelIndex)));
+    connect(fmMM,       SIGNAL(signalOpenPictures(QModelIndexList)),
+            this,       SLOT(showPictures(QModelIndexList)));
+
+
+}
+
+void Controller::showPicture(QModelIndex ind )
+{
+    FmAttarctorViewer *fmAV = new FmAttarctorViewer(ind, data);
+    fmAV->showMaximized();
+}
+
+void Controller::showPictures(QModelIndexList inds )
+{
+    FmAttarctorViewer *fmAV = new FmAttarctorViewer(inds, data);
+    fmAV->showMaximized();
 }

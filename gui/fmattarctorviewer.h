@@ -1,22 +1,38 @@
-#ifndef FMATTARCTORVIEWER_H
-#define FMATTARCTORVIEWER_H
+#ifndef FmAttarctorViewer_H
+#define FmAttarctorViewer_H
 
 #include <QWidget>
+#include <QModelIndex>
+#include <QAbstractItemModel>
+#include <QImage>
+
+#include "data/data.h"
 
 namespace Ui {
-class fmAttarctorViewer;
+class FmAttarctorViewer;
 }
 
-class fmAttarctorViewer : public QWidget
+class FmAttarctorViewer : public QWidget
 {
     Q_OBJECT
 
+    Data * _data;
+
 public:
-    explicit fmAttarctorViewer(QWidget *parent = nullptr);
-    ~fmAttarctorViewer();
+    explicit FmAttarctorViewer(QModelIndex ind, Data *d, QWidget *parent = nullptr);
+    explicit FmAttarctorViewer(QModelIndexList inds, Data *d, QWidget *parent = nullptr);
+
+    ~FmAttarctorViewer();
+
+private slots:
+
+    void on_pb_close_clicked();
 
 private:
-    Ui::fmAttarctorViewer *ui;
+    Ui::FmAttarctorViewer *ui;
+
+    void initPicture(QModelIndex ind);
+    void initPicture(QModelIndexList inds);
 };
 
-#endif // FMATTARCTORVIEWER_H
+#endif // FmAttarctorViewer_H

@@ -53,7 +53,7 @@ private:
 
     void setMask(QLineEdit *obj, QString mask);
 
-
+    QModelIndexList getCheckedFromTable();
 public slots:
     void slotOnSingleAlgComplete(QImage image);
 
@@ -91,6 +91,8 @@ private slots:
 
     void on_pb_remove_current_clicked();
 
+    void on_pb_view_selected_clicked();
+
 signals:
     /// single
     void startSingleAlg(ALGS,uint,uint,uint);
@@ -103,5 +105,7 @@ signals:
     void signalSetInterval(qreal,qreal,qreal,qreal);
     int  signalInitVectorCoef(QString);
     int  signalInitVectorProb(QString, bool);
+    void signalOpenPicture(QModelIndex);
+    void signalOpenPictures(QModelIndexList);
 };
 #endif // FMMAINMENU_H

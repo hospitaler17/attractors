@@ -9,6 +9,8 @@
 #include "fmmainmenu.h"
 #include "fmprogressbar.h"
 #include "fmattarctorviewer.h"
+#include "maintask.h"
+
 
 // tasks
 #include "maintask.h"
@@ -26,14 +28,18 @@ private:
     Data * data;
 
     fmMainMenu          *fmMM;
-    fmProgressBar       *fmPB;
-    fmAttarctorViewer   *fmAV;
 
     MainTask            *mainTask;
 
     void connectFormToTask();
 
 signals:
+
+private slots:
+    void showPicture(QModelIndex);
+    void showPictures(QModelIndexList);
+
+
 
 };
 

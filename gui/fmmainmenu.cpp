@@ -47,11 +47,20 @@ void fmMainMenu::setData(Data *data)
     initLastWorksSettings();
 
     ui->tableView->setModel(d->getModels()->getMultipleModel());
-//    ui->tableView->hideColumn(MMC_NUMBER);
+
     ui->tableView->resizeRowsToContents();
+    ui->tableView->resizeColumnsToContents();
+
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->setAutoScroll(true);
     ui->tableView->setSortingEnabled(true);
 
+    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)),
+            this, SIGNAL(signalOpenPicture(QModelIndex)));
 
 }
 
@@ -92,8 +101,6 @@ int fmMainMenu::setIntervalFromForm()
     {
         return INTERVAL_WINDOW_IS_EMPTY;
     }
-
-
 }
 
 void fmMainMenu::blockButtonsOnStart(bool value)
@@ -107,6 +114,19 @@ void fmMainMenu::setMask(QLineEdit *obj, QString mask)
     QValidator *validSizeWindow = new QRegularExpressionValidator(regExp);
     obj->setValidator(validSizeWindow);
 
+}
+
+QModelIndexList fmMainMenu::getCheckedFromTable()
+{
+    QStandardItemModel * model = d->getModels()->getMultipleModel();
+    QModelIndexList inds;
+    for (int i = 0; i <  model->rowCount(); ++i)
+    {
+        QModelIndex ind = model->index(i, MMC_NUMBER);
+        if(model->itemFromIndex(ind)->checkState()==Qt::Checked)
+            inds.append(ind);
+    }
+    return inds;
 }
 
 void fmMainMenu::slotOnSingleAlgComplete(QImage image)
@@ -123,7 +143,6 @@ void fmMainMenu::slotOnSingleAlgComplete(QImage image)
     blockButtonsOnStart(false);
 
 }
-
 
 int fmMainMenu::taskErrorHandler(int error)
 {
@@ -164,30 +183,7 @@ int fmMainMenu::taskErrorHandler(int error)
 void fmMainMenu::on_pb_saveToFile_clicked()
 {
     //TODO: Сделать сохранение изображений
-//    if(ui->tabWidget->currentIndex() == SINGLE_BUILDS)
-//    {
-//        //emit savePictureToFile();
-//    }
-//    else if (ui->tabWidget->currentIndex() == MULTIPLE_BUILDS)
-//    {
-//        QVector<int> pics;
-//        //TODO: Сделать выборку по изображениям
-//        emit savePicturesToFile(pics);
-//    }
-//    bool ok = printTask->writeImage();
-//    QString text;
-//    if(ok)emit savePictureToFile();
-//    {
-//        text = tr("Файл успешно сохранен");
-//    }
-//    else
-//    {
-//        text = tr("Файл не получилось сохранить");
-//    }
-//    qDebug() << text;
-//    ui->statusbar->showMessage(text, 5000);
 }
-
 
 void fmMainMenu::on_tb_getPath_clicked()
 {
@@ -307,7 +303,6 @@ void fmMainMenu::on_tb_backgroundColor_clicked()
 
 }
 
-
 void fmMainMenu::on_pb_startSingleAlg_clicked()
 {
     saveLastWorksSettings();
@@ -409,7 +404,6 @@ void fmMainMenu::on_cb_multipleBuilding_stateChanged(int arg1)
     }
 }
 
-
 void fmMainMenu::on_pb_remove_all_clicked()
 {
     d->getModels()->getMultipleModel()->removeRows(0,
@@ -419,16 +413,17 @@ void fmMainMenu::on_pb_remove_all_clicked()
 void fmMainMenu::on_pb_remove_current_clicked()
 {
     QStandardItemModel * model = d->getModels()->getMultipleModel();
-    QVector<int> indOnDel;
-    for (int i = 0; i <  model->rowCount(); ++i)
-    {
-        if(model->item(i, MMC_NUMBER)->checkState()==Qt::Checked)
-            indOnDel.append(i);
-    }
+    QModelIndexList inds = getCheckedFromTable();
 
-    for(int i = 0; i < indOnDel.count(); ++i)
+    for(int i = inds.count()-1; i >= 0; --i)
     {
-        model->removeRow(indOnDel.at(i));
+        model->removeRow(inds.at(i).row());
     }
+}
+
+
+void fmMainMenu::on_pb_view_selected_clicked()
+{
+    emit signalOpenPictures(getCheckedFromTable());
 }
 

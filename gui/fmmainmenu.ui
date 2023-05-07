@@ -120,6 +120,12 @@
                  <layout class="QHBoxLayout" name="hl_sizeWindow">
                   <item>
                    <widget class="QLabel" name="label_sizeWindow">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>50</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Размер окна, пикс.:</string>
                     </property>
@@ -129,7 +135,7 @@
                    <widget class="QLineEdit" name="le_sizeWindow">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
+                      <horstretch>50</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
@@ -151,6 +157,12 @@
                  <layout class="QHBoxLayout" name="hl_level">
                   <item>
                    <widget class="QLabel" name="label_level">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>50</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
                     <property name="text">
                      <string>Число итераций:</string>
                     </property>
@@ -160,7 +172,7 @@
                    <widget class="QLineEdit" name="le_level">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
+                      <horstretch>20</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
@@ -173,7 +185,7 @@
                    <widget class="QLabel" name="label_line">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                      <horstretch>0</horstretch>
+                      <horstretch>10</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
@@ -192,7 +204,7 @@
                    <widget class="QLineEdit" name="le_level_maximum_multiple">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
+                      <horstretch>20</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
@@ -369,13 +381,6 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QPushButton" name="pb_saveToFile">
-                 <property name="text">
-                  <string>Сохранить в файл</string>
-                 </property>
-                </widget>
-               </item>
               </layout>
              </item>
             </layout>
@@ -429,7 +434,7 @@
            <item>
             <widget class="QFrame" name="frame_buttons">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -456,6 +461,26 @@
               <property name="bottomMargin">
                <number>3</number>
               </property>
+              <item>
+               <widget class="QPushButton" name="pb_view_selected">
+                <property name="text">
+                 <string>Просмотр выбранных</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pb_saveToFile">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Сохранить выбранные</string>
+                </property>
+               </widget>
+              </item>
               <item>
                <spacer name="horizontalSpacer">
                 <property name="orientation">
