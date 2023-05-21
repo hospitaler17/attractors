@@ -1,8 +1,10 @@
 #include "alg.h"
 
-Alg::Alg(QObject *parent)
+Alg::Alg(uint key, QObject *parent)
     : QObject{parent}
 {
+    setKey(key);
+
     x1 = -3; x2 = 4;
     y1 = -3; y2 = 3;
 }
@@ -17,6 +19,10 @@ void Alg::DSIF(uint size, uint sizeWindow, uint level)
     // level    - число итераций
     /// ВЫХОД
     // Т - бинарная матрица аттрактора размера m на m
+
+    _size = size;
+    _level = level;
+    _sizeWindow = sizeWindow;
 
     uint i, j, k, l, buffX, buffY = 1;
 
@@ -63,29 +69,7 @@ void Alg::DSIF(uint size, uint sizeWindow, uint level)
         }
     }
 
-    //TODO: перенести в отдельную функцию
-    { // переведем коэф в экранные
-        double M11, M22, w1, w2;
-        double i1 = 0; double i2 = sizeWindow;
-        double j1 = sizeWindow; double j2 = 0;
-
-        for(i = 0; i < size; ++i)
-        {
-            M11 = (i2 - i1)/(x2 - x1);
-            M22 = (j2 - j1)/(y2 - y1);
-            w1 = i1 - M11 * x1;
-            w2 = j1 - M22 * y1;
-
-            matrix[i][1] = (M11 / M22) * matrix[i][1]; // b
-            matrix[i][2] = (M22 / M11) * matrix[i][2]; // c
-
-            matrix[i][4] = (1 - matrix[i][0]) * w1 - matrix[i][1] * w2 + M11 * matrix[i][4]; // e
-            matrix[i][5] = -1 * matrix[i][2] * w1 + (1 - matrix[i][3]) * w2 + M22 * matrix[i][5]; // f
-        }
-    }
-
-
-
+    convertCoefs(size, sizeWindow, matrix);
 
     /// Алгоритм ДСИФ
     for(k = 0; k < level; ++k)
@@ -134,7 +118,7 @@ void Alg::DSIF(uint size, uint sizeWindow, uint level)
     }
     /// Конец алгоритма
     qDebug() << "DSIF complete!";
-    emit DSIFcomplete();
+    emit DSIFcomplete(_key);
 
 
     for (i = 0; i < size; i++)
@@ -158,6 +142,10 @@ void Alg::RSIF(uint size, uint sizeWindow, uint level)
     /// ВЫХОД
     // Т - бинарная матрица аттрактора размера m на m
 
+    _size = size;
+    _level = level;
+    _sizeWindow = sizeWindow;
+
     quint32 i, j, k, x = 0, y = 0;
     quint32 x0 = 0, y0 = 0;
 
@@ -176,26 +164,7 @@ void Alg::RSIF(uint size, uint sizeWindow, uint level)
         }
     }
 
-    //TODO: перенести в отдельную функцию
-    { // переведем коэф в экранные
-        double M11, M22, w1, w2;
-        double i1 = 0; double i2 = sizeWindow;
-        double j1 = sizeWindow; double j2 = 0;
-
-        for(i = 0; i < size; ++i)
-        {
-            M11 = (i2 - i1)/(x2 - x1);
-            M22 = (j2 - j1)/(y2 - y1);
-            w1 = i1 - M11 * x1;
-            w2 = j1 - M22 * y1;
-
-            matrix[i][1] = (M11 / M22) * matrix[i][1]; // b
-            matrix[i][2] = (M22 / M11) * matrix[i][2]; // c
-
-            matrix[i][4] = (1 - matrix[i][0]) * w1 - matrix[i][1] * w2 + M11 * matrix[i][4]; // e
-            matrix[i][5] = -1 * matrix[i][2] * w1 + (1 - matrix[i][3]) * w2 + M22 * matrix[i][5]; // f
-        }
-    }
+    convertCoefs(size, sizeWindow, matrix);
 
     /// Алгоритм РСИФ
     QRandomGenerator *rg = QRandomGenerator::global();
@@ -239,7 +208,7 @@ void Alg::RSIF(uint size, uint sizeWindow, uint level)
     /// Конец алгоритма
 
     qDebug() << "RSIF complite!";
-    emit RSIFcomplete();
+    emit RSIFcomplete(_key);
 
     for (i = 0; i < size; i++)
         free(matrix[i]);
@@ -253,15 +222,61 @@ void Alg::setVector(QVector<double> vector)
     vec = vector;
 }
 
-void Alg::setInterval(qreal newX1, qreal newX2, qreal newY1, qreal newY2)
+void Alg::setInterval(QRectF rect)
 {
-    x1 = newX1; x2 = newX2;
-    y1 = newY1; y2 = newY2;
+    x1 = rect.topLeft().rx(); x2 = rect.bottomRight().rx();
+    y1 = rect.topLeft().ry(); y2 = rect.bottomRight().ry();
 }
 
 void Alg::setVectorProbability(QVector<double> vector)
 {
     vecProbability = vector;
+}
+
+uint Alg::sizeWindow() const
+{
+    return _sizeWindow;
+}
+
+uint Alg::size() const
+{
+    return _size;
+}
+
+uint Alg::level() const
+{
+    return _level;
+}
+
+uint Alg::key() const
+{
+    return _key;
+}
+
+void Alg::setKey(uint newKey)
+{
+    _key = newKey;
+}
+
+void Alg::convertCoefs(uint &size, uint &sizeWindow, double **matrix)
+{
+    double M11, M22, w1, w2;
+    double i1 = 0; double i2 = sizeWindow;
+    double j1 = sizeWindow; double j2 = 0;
+
+    for(uint i = 0; i < size; ++i)
+    {
+        M11 = (i2 - i1)/(x2 - x1);
+        M22 = (j2 - j1)/(y2 - y1);
+        w1 = i1 - M11 * x1;
+        w2 = j1 - M22 * y1;
+
+        matrix[i][1] = (M11 / M22) * matrix[i][1]; // b
+        matrix[i][2] = (M22 / M11) * matrix[i][2]; // c
+
+        matrix[i][4] = (1 - matrix[i][0]) * w1 - matrix[i][1] * w2 + M11 * matrix[i][4]; // e
+        matrix[i][5] = -1 * matrix[i][2] * w1 + (1 - matrix[i][3]) * w2 + M22 * matrix[i][5]; // f
+    }
 }
 
 int Alg::getProbabilityNumber(int rundomNumber)

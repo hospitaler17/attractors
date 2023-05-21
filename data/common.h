@@ -1,6 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <QObject>
+
 #define SIZE_COEF 6
 
 enum ERRORS
@@ -27,9 +29,7 @@ enum MODEL_MULTIPLE_COLUMNS
     MMC_PICTURE     = 3,
     MMC_NAME        = 1,
     MMC_LEVEL       = 2
-
 };
-
 
 
 #endif // COMMON_H

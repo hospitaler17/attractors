@@ -2,6 +2,7 @@
 #define DATA_H
 
 #include <QObject>
+#include <QRectF>
 #include "settings.h"
 #include "models.h"
 

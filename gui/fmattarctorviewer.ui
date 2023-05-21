@@ -40,8 +40,14 @@
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
           <widget class="QLabel" name="label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string> </string>
            </property>
           </widget>
          </item>
@@ -63,6 +69,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="pb_save">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Сохранить</string>
         </property>
@@ -70,6 +82,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="pb_save_all">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Сохранить все</string>
         </property>
@@ -77,6 +95,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="pb_close">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Закрыть</string>
         </property>

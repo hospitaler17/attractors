@@ -22,12 +22,11 @@ fmMainMenu::fmMainMenu(QWidget *parent)
 
     ui->rb_DSIF->click();
 
-    //algChanged(DSIF);
     on_cb_multipleBuilding_stateChanged(0);
 
     ui->pb_saveToFile->setEnabled(false);
 
-    //TODO: сделать автоматическое смещение окна по изображению
+    //TODO: сделать автоматическое смещение окна (мирового) по изображению
     ui->cb_autoFindWindow->hide();
 
 
@@ -90,11 +89,12 @@ int fmMainMenu::setIntervalFromForm()
                || !ui->le_y1->text().isEmpty()
                || !ui->le_y2->text().isEmpty())
     {
-        qreal x1 = ui->le_x1->text().toDouble();
-        qreal x2 = ui->le_x2->text().toDouble();
-        qreal y1 = ui->le_y1->text().toDouble();
-        qreal y2 = ui->le_y2->text().toDouble();
-        emit signalSetInterval(x1, x2, y1, y2);
+        QRectF interval(ui->le_x1->text().toDouble(),
+                        ui->le_y1->text().toDouble(),
+                        ui->le_x2->text().toDouble(),
+                        ui->le_y2->text().toDouble());
+
+        emit signalSetInterval(interval);
         return GOOD;
     }
     else
@@ -182,7 +182,7 @@ int fmMainMenu::taskErrorHandler(int error)
 
 void fmMainMenu::on_pb_saveToFile_clicked()
 {
-    //TODO: Сделать сохранение изображений
+    //TODO: Сделать сохранение в файл
 }
 
 void fmMainMenu::on_tb_getPath_clicked()
@@ -309,6 +309,8 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
 
     int result = GOOD;
 
+    emit signalMakeNewWorkThread();
+
     // Установим интервалы мирового окна
     result = taskErrorHandler(setIntervalFromForm());
 
@@ -324,8 +326,8 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
         if(result == GOOD)
             emit startSingleAlg(currentAlg,
                                 ui->le_sizeWindow->text().toUInt(),
-                                ui->le_level->text().toUInt() + 1,
-                                ui->le_level->text().toUInt() + 1);
+                                ui->le_level->text().toUInt(),
+                                ui->le_level->text().toUInt());
     }
     else
     {
@@ -333,15 +335,16 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
         if(result == GOOD)
             emit startMultipleAlg(currentAlg,
                                   ui->le_sizeWindow->text().toUInt(),
-                                  ui->le_level->text().toUInt() + 1,
-                                  ui->le_level_maximum_multiple->text().toUInt() +1);
+                                  ui->le_level->text().toUInt(),
+                                  ui->le_level_maximum_multiple->text().toUInt());
 
     }
 }
 
 void fmMainMenu::initLastWorksSettings()
 {
-    ui->rb_DSIF->setChecked(d->getSettings()->getLastMethod()==ALGS::DSIF? true:false);
+    d->getSettings()->getLastMethod()==ALGS::DSIF? ui->rb_DSIF->setChecked(true):
+                                                   ui->rb_RSIF->setChecked(true);
     ui->cb_monocristal->setChecked(d->getSettings()->getLastIsMonocristal());
 
     ui->le_sizeWindow->setText(QString::number(d->getSettings()->getLastSizeWindowX()));
@@ -361,8 +364,8 @@ void fmMainMenu::initLastWorksSettings()
 void fmMainMenu::initMasks()
 {
     setMask(ui->le_sizeWindow,              "[0-9]{3,}");
-    setMask(ui->le_level,                   "[0-9]{1,}");
-    setMask(ui->le_level_maximum_multiple,  "[0-9]{1,}");
+    setMask(ui->le_level,                   "[1-9][0-9]{1,}");
+    setMask(ui->le_level_maximum_multiple,  "[1-9][0-9]{1,}");
     setMask(ui->le_x1,                      "[-]?[0-9]{1,}[.][0-9]{1,}");
     setMask(ui->le_x2,                      "[-]?[0-9]{1,}[.][0-9]{1,}");
     setMask(ui->le_y1,                      "[-]?[0-9]{1,}[.][0-9]{1,}");
@@ -387,8 +390,6 @@ void fmMainMenu::saveLastWorksSettings()
     d->getSettings()->setLastCoefPath(ui->le_pathToCoef->text());
     d->getSettings()->setLastProbPath(ui->le_pathToCoef_probability->text());
 }
-
-
 
 void fmMainMenu::on_cb_multipleBuilding_stateChanged(int arg1)
 {
@@ -421,9 +422,7 @@ void fmMainMenu::on_pb_remove_current_clicked()
     }
 }
 
-
 void fmMainMenu::on_pb_view_selected_clicked()
 {
     emit signalOpenPictures(getCheckedFromTable());
 }
-

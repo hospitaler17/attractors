@@ -18,7 +18,6 @@ void PrintTask::newImage(uint sizeX, uint sizeY)
 {
     borderX = sizeX;
     borderY = sizeY;
-    qDebug() << "new: borderX = " << borderX << "; borderY = " << borderY;
     image = new QImage(sizeX, sizeY, QImage::Format_RGB32);
 
     //TODO: сменить на нужный цвет
@@ -37,13 +36,12 @@ void PrintTask::setBackgroundColor(uint color)
 
 bool PrintTask::setPixel(qint64 x, qint64 y)
 {
-    qDebug() << "new x = " << x << "; new y = " << y;
+//    qDebug() << "new x = " << x << "; new y = " << y;
     if((x <= borderX && x > 0) && (y <= borderY && y > 0))
     {
         image->setPixel(x, y, color);
         return true;
     }
-    qDebug() << "print point false";
     return false;
 }
 

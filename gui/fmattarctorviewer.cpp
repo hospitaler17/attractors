@@ -28,8 +28,6 @@ FmAttarctorViewer::~FmAttarctorViewer()
     delete ui;
 }
 
-
-
 void FmAttarctorViewer::on_pb_close_clicked()
 {
     close();
@@ -58,4 +56,3 @@ void FmAttarctorViewer::initPicture(QModelIndexList inds)
         initPicture(inds.at(i));
     }
 }
-

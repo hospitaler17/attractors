@@ -102,7 +102,8 @@ signals:
     void savePicturesToFile(QVector<int>);
 
     /// common signals
-    void signalSetInterval(qreal,qreal,qreal,qreal);
+    void signalMakeNewWorkThread();
+    void signalSetInterval(QRectF);
     int  signalInitVectorCoef(QString);
     int  signalInitVectorProb(QString, bool);
     void signalOpenPicture(QModelIndex);

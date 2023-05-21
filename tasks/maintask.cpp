@@ -3,37 +3,20 @@
 MainTask::MainTask(QObject *parent)
     : QObject{parent}
 {
-    // objs
-    alg     = new Alg();
-    thread  = new QThread();
-    printer = new PrintTask();
 
-    // thread
-    alg->moveToThread(thread);
-    thread->start();
-
-    // sign in thread to algs
-    connect(this, SIGNAL(signalStartDSIF(uint,uint,uint)), alg, SLOT(DSIF(uint,uint,uint)));
-    connect(this, SIGNAL(signalStartRSIF(uint,uint,uint)), alg, SLOT(RSIF(uint,uint,uint)));
-
-    // setters for algs
-    connect(this, SIGNAL(setVector(QVector<double>)), alg, SLOT(setVector(QVector<double>)));
-    connect(this, SIGNAL(setVectorProb(QVector<double>)), alg, SLOT(setVectorProbability(QVector<double>)));
-    connect(this, SIGNAL(setInterval(qreal,qreal,qreal,qreal)), alg, SLOT(setInterval(qreal,qreal,qreal,qreal)));
-
-    // complete signals from alg thread
-    connect(alg, SIGNAL(DSIFcomplete()), this, SLOT(slotOnAlgComplete()));
-    connect(alg, SIGNAL(RSIFcomplete()), this, SLOT(slotOnAlgComplete()));
-
-    // signal print pixel
-    connect(alg, SIGNAL(pixelFound(qint64,qint64)), printer, SLOT(setPixel(qint64,qint64)));
 }
 
 MainTask::~MainTask()
 {
-    thread->deleteLater();
-    delete thread;
-    delete alg;
+    for(int key = hashAlg.count() - 1; key >= 0; --key)
+    {
+        removeTasksAt((uint) key);
+    }
+}
+
+const QRectF &MainTask::interval() const
+{
+    return _interval;
 }
 
 bool MainTask::processLine(QByteArray line, QVector<double> &vector)
@@ -108,21 +91,45 @@ int MainTask::getVectorFromFile(QString path, uint &size, QVector<double> &vecto
     return GOOD;
 }
 
-void MainTask::setPrintColors()
+void MainTask::setPrintColors(PrintTask * pt)
 {
     // Цвет рисунка
     quint32 red = data->getSettings()->getRedColorPixel();
     quint32 green = data->getSettings()->getGreenColorPixel();
     quint32 blue = data->getSettings()->getBlueColorPixel();
 
-    printer->setPixelColor((red << 16) + (green << 8) + blue); // #RRGGBB формат
+    pt->setPixelColor((red << 16) + (green << 8) + blue); // #RRGGBB формат
 
     // Цвет фона
     red = data->getSettings()->getRedColorBackground();
     green = data->getSettings()->getGreenColorBackground();
     blue = data->getSettings()->getBlueColorBackground();
 
-    printer->setBackgroundColor((red << 16) + (green << 8) + blue); // #RRGGBB формат
+    pt->setBackgroundColor((red << 16) + (green << 8) + blue); // #RRGGBB формат
+}
+
+void MainTask::moveTasksToThreads(uint key, Alg *alg, PrintTask *printTask)
+{
+    QThread * thread = new QThread();
+
+    alg->moveToThread(thread);
+    printTask->moveToThread(thread);
+
+    thread->start();
+
+    hashThread.insert(key, thread);
+}
+
+void MainTask::removeTasksAt(uint key)
+{
+    hashThread.value(key)->exit(0);
+//    hashThread.value(key)->terminate();
+    hashThread.value(key)->wait();
+    hashThread.value(key)->deleteLater();
+
+    hashAlg.remove(key);
+    hashAlg.remove(key);
+    hashThread.remove(key);
 }
 
 
@@ -147,7 +154,7 @@ int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocr
             return -1;
         }
     }
-    else if(isMonocristal)
+    else /*if(isMonocristal)*/
     {
         QVector<double> vecDet; // temperary
         double sum_s2j = 0.0;
@@ -162,8 +169,8 @@ int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocr
         {
             vecProbability.append(vecDet.at(i)/sum_s2j);
         }
+        return GOOD;
     }
-    //TODO: переделать return!
     return -1;
 }
 
@@ -172,52 +179,125 @@ int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocr
 /// *** Single building ***
 
 
-void MainTask::startSingleAlg(ALGS algType, uint sizeWindow, uint level) // старт
-{
+//void MainTask::startSingleAlg(ALGS algType, uint sizeWindow, uint level) // старт
+//{
 
-    // Установим нач значения
-    emit setVector(vecCoefs);
+//    // Установим нач значения
+//    emit setVector(vecCoefs);
 
-    // Создадим изображение для отрисовки
-    setPrintColors();
-    printer->newImage(sizeWindow, sizeWindow);
+//    // Создадим изображение для отрисовки
+//    setPrintColors();
+//    printer->newImage(sizeWindow, sizeWindow);
 
-    // Запускаем выбранный алгоритм
-    if (algType == ALGS::DSIF)
-    {
-        emit signalStartDSIF(sizeCoefs, sizeWindow, level);
-    }
-    else  if (algType == ALGS::RSIF)
-    {
-        if( !vecProbability.isEmpty() )
-            emit setVectorProb(vecProbability);
-        emit signalStartRSIF(sizeCoefs, sizeWindow, level);
-    }
-//    ui->label->setFixedSize(sizeWindow, sizeWindow);
-//    emit printOnStatusBar(tr("Выполняется расчет..."));
+//    // Запускаем выбранный алгоритм
+//    if (algType == ALGS::DSIF)
+//    {
+//        emit signalStartDSIF(sizeCoefs, sizeWindow, level);
+//    }
+//    else  if (algType == ALGS::RSIF)
+//    {
+//        if( !vecProbability.isEmpty() )
+//            emit setVectorProb(vecProbability);
+//        emit signalStartRSIF(sizeCoefs, sizeWindow, level);
+//    }
+////    ui->label->setFixedSize(sizeWindow, sizeWindow);
+////    emit printOnStatusBar(tr("Выполняется расчет..."));
 
-    //Почистим ненужное
-    vecCoefs.clear();
-    vecProbability.clear();
-    sizeCoefs = 0;
 
-}
+//}
 
 /// *************************
 /// *** Multiple building ***
 
 
-void MainTask::startMultipleAlg(ALGS algType, uint sizeWindow, uint startLevel, uint endLevel)
+//void MainTask::startMultipleAlg(ALGS algType, uint sizeWindow, uint startLevel, uint endLevel)
+//{
+//    for(uint counter = startLevel; counter <= endLevel; ++counter)
+//    {
+//        currentLevel = counter;
+//        startSingleAlg(algType, sizeWindow, counter);
+//    }
+//}
+
+void MainTask::slotOnAlgComplete(uint key)
+{
+//    emit signalGettingImage(printer->getImage(), currentLevel);
+    data->getModels()->addImage(hashPaintTask.value(key)->getImage(),
+                                hashAlg.value(key)->level());
+
+    removeTasksAt(key);
+}
+
+void MainTask::slotStartTask(ALGS algType, uint sizeWindow, uint startLevel, uint endLevel)
 {
     for(uint counter = startLevel; counter <= endLevel; ++counter)
     {
-        currentLevel = counter;
-        startSingleAlg(algType, sizeWindow, counter);
-    }
-}
+        uint key = counter;
+        while(hashAlg.contains(key))
+            key++;
 
-void MainTask::slotOnAlgComplete()
-{
-//    emit signalGettingImage(printer->getImage(), currentLevel);
-    data->getModels()->addImage(printer->getImage(), currentLevel);
+        /// Инициализация Alg
+        Alg * alg = new Alg(key);
+
+        // sign in thread to algs
+        connect(this, SIGNAL(signalStartDSIF(uint,uint,uint)),
+                alg, SLOT(DSIF(uint,uint,uint)));
+
+        connect(this, SIGNAL(signalStartRSIF(uint,uint,uint)),
+                alg, SLOT(RSIF(uint,uint,uint)));
+
+        // complete signals from alg thread
+        connect(alg, SIGNAL(DSIFcomplete(uint)),
+                this, SLOT(slotOnAlgComplete(uint)));
+
+        connect(alg, SIGNAL(RSIFcomplete(uint)),
+                this, SLOT(slotOnAlgComplete(uint)));
+
+        // setters for algs
+        alg->setVector(vecCoefs);
+        if(!vecProbability.isEmpty()) alg->setVectorProbability(vecProbability);
+        alg->setInterval(_interval);
+
+//        connect(this, SIGNAL(setVector(QVector<double>)), alg, SLOT(setVector(QVector<double>)));
+//        connect(this, SIGNAL(setVectorProb(QVector<double>)), alg, SLOT(setVectorProbability(QVector<double>)));
+//        connect(this, SIGNAL(setInterval(QRectF)), alg, SLOT(setInterval(QRectF)));
+
+
+
+        // Установим нач значения
+        emit setVector(vecCoefs);
+
+        /// Инициализация PrintTask
+        PrintTask * pt = new PrintTask();
+
+        // Создадим изображение для отрисовки
+        pt->newImage(sizeWindow, sizeWindow);
+
+        connect(alg, SIGNAL(pixelFound(qint64,qint64)),
+                pt, SLOT(setPixel(qint64,qint64)));
+
+        setPrintColors(pt);
+
+
+        moveTasksToThreads(key, alg, pt);
+
+        hashAlg.insert(key, alg);
+        hashPaintTask.insert(key, pt);
+
+        // Запускаем выбранный алгоритм
+        if (algType == ALGS::DSIF)
+        {
+            emit signalStartDSIF(sizeCoefs, sizeWindow, counter);
+        }
+        else  if (algType == ALGS::RSIF)
+        {
+            if( !vecProbability.isEmpty() )
+                emit setVectorProb(vecProbability);
+            emit signalStartRSIF(sizeCoefs, sizeWindow, counter);
+        }
+        disconnect(this, SIGNAL(signalStartDSIF(uint,uint,uint)), alg, SLOT(DSIF(uint,uint,uint)));
+        disconnect(this, SIGNAL(signalStartRSIF(uint,uint,uint)), alg, SLOT(RSIF(uint,uint,uint)));
+
+
+    }
 }

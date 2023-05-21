@@ -36,11 +36,11 @@ void Models::addImage(QImage img, uint level)
             QStandardItem * newRowCount = new QStandardItem();
             newRowCount->setCheckable(true);
             newRowCount->setCheckState(Qt::Unchecked);
+            newRowCount->setBackground(QBrush(QColor(Qt::white)));
             modelMultipleBuild->setItem(currentRow, MMC_NUMBER, newRowCount);
         }
         else if (i == MMC_PICTURE)
-        {            //TODO:сделать хранилище для картинки
-//            Q_UNUSED(img);
+        {
             QVariant varImg = QVariant(img);
             modelMultipleBuild->setData(modelMultipleBuild->index(currentRow, MMC_PICTURE),
                                         varImg, Qt::DecorationRole);

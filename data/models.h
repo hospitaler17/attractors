@@ -9,6 +9,7 @@
 #include <QModelIndex>
 #include <QPixmap>
 #include <QImage>
+#include <QBrush>
 
 #include "common.h"
 

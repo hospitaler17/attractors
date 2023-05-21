@@ -30,10 +30,6 @@ public slots:
     bool writeImage(QString name = "");     // Запись текущего изображения в файл
 
 
-
-
-
-
 private:
     QString path;               // Путь каталога
     QImage * image;             // Изображение
