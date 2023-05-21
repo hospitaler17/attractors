@@ -19,6 +19,13 @@ void Models::initModel()
 
     modelMultipleBuild->setHeaderData(MMC_LEVEL, Qt::Horizontal,    tr("Номер итерации"));
 
+    modelMultipleBuild->setHeaderData(MMC_SIZE, Qt::Horizontal,     tr("Кол. уров."));
+
+    modelMultipleBuild->setHeaderData(MMC_WINDOW, Qt::Horizontal,   tr("Размер изобр."));
+
+    modelMultipleBuild->setHeaderData(MMC_WORLD_WINDOW, Qt::Horizontal, tr("Мировое окно"));
+
+
 }
 
 void Models::clearMultipleModel()
@@ -26,7 +33,7 @@ void Models::clearMultipleModel()
     modelMultipleBuild->clear();
 }
 
-void Models::addImage(QImage img, uint level)
+void Models::addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow)
 {
     int currentRow = modelMultipleBuild->rowCount();
     for(int i = 0; i < MMB_SIZE; ++i)
@@ -36,7 +43,7 @@ void Models::addImage(QImage img, uint level)
             QStandardItem * newRowCount = new QStandardItem();
             newRowCount->setCheckable(true);
             newRowCount->setCheckState(Qt::Unchecked);
-            newRowCount->setBackground(QBrush(QColor(Qt::white)));
+            newRowCount->setBackground(QBrush(QColor(200,200,200)));
             modelMultipleBuild->setItem(currentRow, MMC_NUMBER, newRowCount);
         }
         else if (i == MMC_PICTURE)
@@ -57,7 +64,26 @@ void Models::addImage(QImage img, uint level)
             QStandardItem * newRowLevel = new QStandardItem(QString::number(level));
             modelMultipleBuild->setItem(currentRow, MMC_LEVEL, newRowLevel);
         }
+        else if (i == MMC_SIZE)
+        {
+            QStandardItem * newRowSize = new QStandardItem(QString::number(size));
+            modelMultipleBuild->setItem(currentRow, MMC_SIZE, newRowSize);
+        }
+        else if (i == MMC_WINDOW)
+        {
+            QStandardItem * newRowWindow = new QStandardItem(QString::number(window));
+            modelMultipleBuild->setItem(currentRow, MMC_WINDOW, newRowWindow);
+        }
+        else if (i == MMC_WORLD_WINDOW)
+        {
+            QString text = QString::number(worldWindow.topLeft().rx(), 'f') + tr(";") +
+                    QString::number(worldWindow.topLeft().ry(), 'f') + tr(";") +
+                    QString::number(worldWindow.bottomRight().rx(), 'f') + tr(";") +
+                    QString::number(worldWindow.bottomRight().ry(), 'f');
+            QStandardItem * newRowWorldWindow = new QStandardItem(text);
+            modelMultipleBuild->setItem(currentRow, MMC_WORLD_WINDOW, newRowWorldWindow);
+        }
     }
-
+    emit newImageAdded();
 }
 

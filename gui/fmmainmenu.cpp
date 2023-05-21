@@ -168,6 +168,9 @@ int fmMainMenu::taskErrorHandler(int error)
     case INTERVAL_WINDOW_IS_UNCORRECT:
         errorText = tr("Некорректный интервал окна");
         break;
+    case NO_SELECTED_ITEMS:
+        errorText = tr("Не выделены обьекты для отображения");
+        break;
 
     default:
         errorText = tr("Неизвестная ошибка (0_0). Что-то пошло совсем не так ...");
@@ -183,6 +186,7 @@ int fmMainMenu::taskErrorHandler(int error)
 void fmMainMenu::on_pb_saveToFile_clicked()
 {
     //TODO: Сделать сохранение в файл
+
 }
 
 void fmMainMenu::on_tb_getPath_clicked()
@@ -424,5 +428,11 @@ void fmMainMenu::on_pb_remove_current_clicked()
 
 void fmMainMenu::on_pb_view_selected_clicked()
 {
-    emit signalOpenPictures(getCheckedFromTable());
+    QModelIndexList list = getCheckedFromTable();
+    if(list.isEmpty())
+    {
+        taskErrorHandler(NO_SELECTED_ITEMS);
+        return;
+    }
+    emit signalOpenPictures(list);
 }

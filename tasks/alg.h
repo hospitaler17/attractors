@@ -24,6 +24,8 @@ public:
 
     uint sizeWindow() const;
 
+    QRectF interval() const;
+
 public slots:
     void DSIF(uint size, uint sizeWindow, uint level);
     void RSIF(uint size, uint sizeWindow, uint level);

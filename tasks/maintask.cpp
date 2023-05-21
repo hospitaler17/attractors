@@ -174,62 +174,21 @@ int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocr
     return -1;
 }
 
-
-/// ***********************
-/// *** Single building ***
-
-
-//void MainTask::startSingleAlg(ALGS algType, uint sizeWindow, uint level) // старт
-//{
-
-//    // Установим нач значения
-//    emit setVector(vecCoefs);
-
-//    // Создадим изображение для отрисовки
-//    setPrintColors();
-//    printer->newImage(sizeWindow, sizeWindow);
-
-//    // Запускаем выбранный алгоритм
-//    if (algType == ALGS::DSIF)
-//    {
-//        emit signalStartDSIF(sizeCoefs, sizeWindow, level);
-//    }
-//    else  if (algType == ALGS::RSIF)
-//    {
-//        if( !vecProbability.isEmpty() )
-//            emit setVectorProb(vecProbability);
-//        emit signalStartRSIF(sizeCoefs, sizeWindow, level);
-//    }
-////    ui->label->setFixedSize(sizeWindow, sizeWindow);
-////    emit printOnStatusBar(tr("Выполняется расчет..."));
-
-
-//}
-
-/// *************************
-/// *** Multiple building ***
-
-
-//void MainTask::startMultipleAlg(ALGS algType, uint sizeWindow, uint startLevel, uint endLevel)
-//{
-//    for(uint counter = startLevel; counter <= endLevel; ++counter)
-//    {
-//        currentLevel = counter;
-//        startSingleAlg(algType, sizeWindow, counter);
-//    }
-//}
-
 void MainTask::slotOnAlgComplete(uint key)
 {
 //    emit signalGettingImage(printer->getImage(), currentLevel);
     data->getModels()->addImage(hashPaintTask.value(key)->getImage(),
-                                hashAlg.value(key)->level());
+                                hashAlg.value(key)->level(),
+                                hashAlg.value(key)->size(),
+                                hashAlg.value(key)->sizeWindow(),
+                                hashAlg.value(key)->interval());
 
     removeTasksAt(key);
 }
 
 void MainTask::slotStartTask(ALGS algType, uint sizeWindow, uint startLevel, uint endLevel)
 {
+
     for(uint counter = startLevel; counter <= endLevel; ++counter)
     {
         uint key = counter;

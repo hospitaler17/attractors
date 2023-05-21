@@ -68,6 +68,8 @@ signals:
     void signalStartDSIF(uint,uint,uint);
     void printOnStatusBar(QString);
     void signalGettingImage(QImage,uint);
+
+    void signalTasksStatusComplete(uint, uint);
 };
 
 #endif // MAINTASK_H

@@ -23,13 +23,16 @@ public:
     QStandardItemModel * getMultipleModel(){return modelMultipleBuild;}
 
 public slots:
-    void addImage(QImage img, uint level);
+    void addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow);
 
 private:
     QStandardItemModel * modelMultipleBuild;
 
     void initModel();
     QList<QPixmap> _images;
+
+signals:
+    void newImageAdded();
 signals:
 
 };

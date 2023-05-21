@@ -238,6 +238,12 @@ uint Alg::sizeWindow() const
     return _sizeWindow;
 }
 
+QRectF Alg::interval() const
+{
+    QRectF rect(QPointF(x1, y1), QPointF(x2, y2));
+    return rect;
+}
+
 uint Alg::size() const
 {
     return _size;
