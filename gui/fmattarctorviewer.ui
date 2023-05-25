@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>AttractorViewer</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -47,7 +47,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string> </string>
+            <string/>
            </property>
           </widget>
          </item>

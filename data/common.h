@@ -28,11 +28,11 @@ enum ALGS
 enum MODEL_MULTIPLE_COLUMNS
 {
     MMC_NUMBER      = 0,
-    MMC_PICTURE     = 6,
+    MMC_PICTURE     = 2,
     MMC_NAME        = 1,
-    MMC_LEVEL       = 2,
+    MMC_LEVEL       = 5,
     MMC_SIZE        = 4,
-    MMC_WORLD_WINDOW = 5,
+    MMC_WORLD_WINDOW = 6,
     MMC_WINDOW      = 3
 };
 

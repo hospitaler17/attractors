@@ -31,6 +31,9 @@ private:
     void initModel();
     QList<QPixmap> _images;
 
+    QColor _backgroundColor;
+
+
 signals:
     void newImageAdded();
 signals:

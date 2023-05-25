@@ -44,7 +44,7 @@ void FmAttarctorViewer::initPicture(QModelIndex ind)
     QLabel * picture = new QLabel();
     picture->setSizePolicy(sp);
     picture->setPixmap(model->data(model->index(ind.row(), MMC_PICTURE), Qt::DecorationRole).value<QPixmap>());
-
+    picture->setAlignment(Qt::AlignCenter);
     ui->tabWidget->addTab(picture,
                           model->data(model->index(ind.row(), MMC_NAME)).toString());
 }

@@ -3,6 +3,7 @@
 Models::Models(QObject *parent)
     : QObject{parent}
 {
+    _backgroundColor = QColor(150,150,150);
     initModel();
 }
 
@@ -36,6 +37,7 @@ void Models::clearMultipleModel()
 void Models::addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow)
 {
     int currentRow = modelMultipleBuild->rowCount();
+    QColor backgroundColor;
     for(int i = 0; i < MMB_SIZE; ++i)
     {
         if(i == MMC_NUMBER)
@@ -43,35 +45,42 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
             QStandardItem * newRowCount = new QStandardItem();
             newRowCount->setCheckable(true);
             newRowCount->setCheckState(Qt::Unchecked);
-            newRowCount->setBackground(QBrush(QColor(200,200,200)));
+            newRowCount->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_NUMBER, newRowCount);
         }
         else if (i == MMC_PICTURE)
         {
             QVariant varImg = QVariant(img);
+
             modelMultipleBuild->setData(modelMultipleBuild->index(currentRow, MMC_PICTURE),
                                         varImg, Qt::DecorationRole);
+
+
         }
         else if (i == MMC_NAME)
         {
             QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss(zzz)") + QString(".PNG");
             QStandardItem * newRowName = new QStandardItem(name);
+            newRowName->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_NAME, newRowName);
 
         }
         else if (i == MMC_LEVEL)
         {
             QStandardItem * newRowLevel = new QStandardItem(QString::number(level));
+            newRowLevel->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_LEVEL, newRowLevel);
         }
         else if (i == MMC_SIZE)
         {
             QStandardItem * newRowSize = new QStandardItem(QString::number(size));
+            newRowSize->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_SIZE, newRowSize);
         }
         else if (i == MMC_WINDOW)
         {
             QStandardItem * newRowWindow = new QStandardItem(QString::number(window));
+            newRowWindow->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_WINDOW, newRowWindow);
         }
         else if (i == MMC_WORLD_WINDOW)
@@ -81,6 +90,7 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
                     QString::number(worldWindow.bottomRight().rx(), 'f') + tr(";") +
                     QString::number(worldWindow.bottomRight().ry(), 'f');
             QStandardItem * newRowWorldWindow = new QStandardItem(text);
+            newRowWorldWindow->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_WORLD_WINDOW, newRowWorldWindow);
         }
     }
