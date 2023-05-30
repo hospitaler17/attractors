@@ -48,10 +48,6 @@ TRANSLATIONS += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
-UI_DIR = .temp/ui
-MOC_DIR = .temp/moc
-OBJECTS_DIR = .temp/obj
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -59,3 +55,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res_common.qrc
+
+include(common.pri)
