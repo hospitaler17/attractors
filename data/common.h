@@ -15,7 +15,8 @@ enum ERRORS
     INTERVAL_WINDOW_IS_EMPTY,       // Нет одного из интервалов окна
     INTERVAL_WINDOW_IS_UNCORRECT,   // Некорректный интервал окна
 
-    NO_SELECTED_ITEMS               // Не выделены обьекты для отображения
+    NO_SELECTED_ITEMS,              // Не выделены обьекты для отображения
+    CANNOT_CREATE_FILE              // Не удалось создать файл с изображением
 };
 
 enum ALGS

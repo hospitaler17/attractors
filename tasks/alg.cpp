@@ -287,9 +287,6 @@ void Alg::convertCoefs(uint &size, uint &sizeWindow, double **matrix)
 
 int Alg::getProbabilityNumber(int rundomNumber)
 {
-    //FIXME: переделать с static на public
-    /*static*/ int counter = 0;
-    /*static*/ int probability = 0;
     if(counter >= vecProbability.size()) // ушли за границу
     {
         counter = 0;

@@ -171,7 +171,9 @@ int fmMainMenu::taskErrorHandler(int error)
     case NO_SELECTED_ITEMS:
         errorText = tr("Не выделены обьекты для отображения");
         break;
-
+    case CANNOT_CREATE_FILE:
+        errorText = tr("Не удалось создать файл с изображением");
+        break;
     default:
         errorText = tr("Неизвестная ошибка (0_0). Что-то пошло совсем не так ...");
     }
@@ -185,8 +187,14 @@ int fmMainMenu::taskErrorHandler(int error)
 
 void fmMainMenu::on_pb_saveToFile_clicked()
 {
-    //TODO: Сделать сохранение в файл
-
+    QModelIndexList list = getCheckedFromTable();
+    QString resText;
+    for(uint i = 0; i < list.count(); ++i)
+    {
+         int res = taskErrorHandler(d->getModels()->saveImageInFile(list.at(i)));
+         res==GOOD?resText=tr("Сохранение прошло успешно"):tr("Проблемы при сохранении");
+         ui->statusbar->showMessage(resText, 10000);
+    }
 }
 
 void fmMainMenu::on_tb_getPath_clicked()

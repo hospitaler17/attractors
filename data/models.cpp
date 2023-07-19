@@ -37,7 +37,6 @@ void Models::clearMultipleModel()
 void Models::addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow)
 {
     int currentRow = modelMultipleBuild->rowCount();
-    QColor backgroundColor;
     for(int i = 0; i < MMB_SIZE; ++i)
     {
         if(i == MMC_NUMBER)
@@ -95,5 +94,22 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
         }
     }
     emit newImageAdded();
+}
+
+int Models::saveImageInFile(QModelIndex ind)
+{
+    /// pictures/datetime/
+    QString path = tr("pictures/") + QDateTime::currentDateTime().toString("yyyy-MM-dd/");
+    QDir dir;
+    if( !dir.exists(path) && !dir.mkpath(path))
+        return CANNOT_CREATE_FILE;
+    dir.cd(path);
+
+    QPixmap pixmap = modelMultipleBuild->data(modelMultipleBuild->index(ind.row(), MMC_PICTURE), Qt::DecorationRole).value<QPixmap>();
+    QString filename = modelMultipleBuild->data(modelMultipleBuild->index(ind.row(), MMC_NAME)).toString();
+
+    if( !pixmap.save(filename, "PNG", 100) )
+        return CANNOT_CREATE_FILE;
+    return GOOD;
 }
 

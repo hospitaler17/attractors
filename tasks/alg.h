@@ -49,6 +49,9 @@ private:
 
     int localProbability;
 
+    int counter = 0;
+    int probability = 0;
+
     QVector<double> vec;
     QVector<double> vecProbability;
 

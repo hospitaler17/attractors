@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QImage>
 #include <QBrush>
+#include <QDir>
 
 #include "common.h"
 
@@ -24,6 +25,7 @@ public:
 
 public slots:
     void addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow);
+    int saveImageInFile(QModelIndex ind);
 
 private:
     QStandardItemModel * modelMultipleBuild;
@@ -36,7 +38,6 @@ private:
 
 signals:
     void newImageAdded();
-signals:
 
 };
 

@@ -21,7 +21,7 @@ void PrintTask::newImage(uint sizeX, uint sizeY)
     image = new QImage(sizeX, sizeY, QImage::Format_RGB32);
 
     //TODO: сменить на нужный цвет
-    image->fill(Qt::white);
+//    image->fill(Qt::white);
 }
 
 void PrintTask::setPixelColor(uint newColor)

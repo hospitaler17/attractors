@@ -122,7 +122,7 @@ void MainTask::moveTasksToThreads(uint key, Alg *alg, PrintTask *printTask)
 
 void MainTask::removeTasksAt(uint key)
 {
-    hashThread.value(key)->exit(0);
+    hashThread.value(key)->exit();
 //    hashThread.value(key)->terminate();
     hashThread.value(key)->wait();
     hashThread.value(key)->deleteLater();
