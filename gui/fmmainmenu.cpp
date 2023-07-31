@@ -61,6 +61,7 @@ void fmMainMenu::setData(Data *data)
     connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)),
             this, SIGNAL(signalOpenPicture(QModelIndex)));
 
+    ui->tabWidget->setCurrentIndex(0);
 }
 
 void fmMainMenu::algChanged(ALGS alg)
