@@ -275,6 +275,7 @@ void fmMainMenu::initColors()
     ui->sb_imageColorGreen->setValue(d->getSettings()->getGreenColorPixel());
     ui->sb_imageColorBlue->setValue(d->getSettings()->getBlueColorPixel());
 
+    ui->cb_without_background->setChecked(d->getSettings()->getBackgroudTransparent());
 }
 
 // tool box button
@@ -282,6 +283,9 @@ void fmMainMenu::on_tb_imageColor_clicked()
 {
     QColorDialog *dialog = new QColorDialog(this);
     QColor color =  dialog->getColor();
+    delete dialog;
+    if( !color.isValid() )
+        return;
     QVariant variant = color;
     QString colcode = variant.toString();
     ui->label_color->setStyleSheet("QLabel { background-color :"+colcode+" ; }");
@@ -293,13 +297,15 @@ void fmMainMenu::on_tb_imageColor_clicked()
     d->getSettings()->setRedColorPixel(color.red());
     d->getSettings()->setGreenColorPixel(color.green());
     d->getSettings()->setBlueColorPixel(color.blue());
-
 }
 
 void fmMainMenu::on_tb_backgroundColor_clicked()
 {
     QColorDialog *dialog = new QColorDialog(this);
     QColor color = dialog->getColor();
+    delete dialog;
+    if( !color.isValid() )
+        return;
     QVariant variant = color;
     QString colcode = variant.toString();
 
@@ -312,7 +318,6 @@ void fmMainMenu::on_tb_backgroundColor_clicked()
     d->getSettings()->setRedColorBackground(color.red());
     d->getSettings()->setGreenColorBackground(color.green());
     d->getSettings()->setBlueColorBackground(color.blue());
-
 }
 
 void fmMainMenu::on_pb_startSingleAlg_clicked()
@@ -325,6 +330,8 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
 
     // Установим интервалы мирового окна
     result = taskErrorHandler(setIntervalFromForm());
+    if(result != GOOD)
+        return;
 
     // Заблокируем кнопки на начало расчетов
     blockButtonsOnStart(true);
@@ -444,3 +451,9 @@ void fmMainMenu::on_pb_view_selected_clicked()
     }
     emit signalOpenPictures(list);
 }
+
+void fmMainMenu::on_cb_without_background_stateChanged(int arg1)
+{
+    d->getSettings()->setBackgroudTransparent(arg1==0?false:true);
+}
+

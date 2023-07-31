@@ -61,13 +61,8 @@ void FmAttarctorViewer::initPicture(QModelIndex ind)
     sp.setHorizontalPolicy(QSizePolicy::Expanding);
     sp.setVerticalPolicy(QSizePolicy::Expanding);
 
-//    QLabel * picture = new QLabel();
-//    picture->setSizePolicy(sp);
-    QPixmap pixmap = model->data(model->index(ind.row(), MMC_PICTURE), Qt::DecorationRole).value<QPixmap>();
-    pixmap.scaled(_tabSize, Qt::KeepAspectRatio);
-//    picture->setPixmap(pixmap);
-//    picture->setAlignment(Qt::AlignCenter);
-//    QGraphicsPixmapItem graphicPixmapItem(pixmap);
+    const QString name = model->data(model->index(ind.row(), MMC_NAME)).toString();
+    QPixmap pixmap = _data->getModels()->getImageByName(name);
     QGraphicsScene * graphicsScene = new QGraphicsScene();
     graphicsScene->addPixmap(pixmap);
 
@@ -76,8 +71,7 @@ void FmAttarctorViewer::initPicture(QModelIndex ind)
     view->setInteractive(true);
     view->setDragMode(QGraphicsView::ScrollHandDrag);
     view->setResizeAnchor(QGraphicsView::AnchorViewCenter);
-    ui->tabWidget->addTab(view/*picture*/,
-                          model->data(model->index(ind.row(), MMC_NAME)).toString());
+    ui->tabWidget->addTab(view, name);
 }
 
 void FmAttarctorViewer::initPicture(QModelIndexList inds)

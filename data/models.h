@@ -23,6 +23,8 @@ public:
     void clearMultipleModel();
     QStandardItemModel * getMultipleModel(){return modelMultipleBuild;}
 
+    QPixmap getImageByName(const QString& name) const;
+
 public slots:
     void addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow);
     int saveImageInFile(QModelIndex ind);
@@ -31,9 +33,9 @@ private:
     QStandardItemModel * modelMultipleBuild;
 
     void initModel();
-    QList<QPixmap> _images;
+    QHash<QString, QPixmap> _images;
 
-    QColor _backgroundColor;
+    QColor _backgroundColor = QColor(150,150,150);
 
 
 signals:

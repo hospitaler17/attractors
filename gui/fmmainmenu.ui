@@ -22,7 +22,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_singleBuilding">
        <attribute name="title">
@@ -745,6 +745,13 @@
                      </property>
                      <property name="text">
                       <string>Цвет фона:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="cb_without_background">
+                     <property name="text">
+                      <string>Прозрачный</string>
                      </property>
                     </widget>
                    </item>

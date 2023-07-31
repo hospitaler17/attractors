@@ -105,7 +105,8 @@ void MainTask::setPrintColors(PrintTask * pt)
     green = data->getSettings()->getGreenColorBackground();
     blue = data->getSettings()->getBlueColorBackground();
 
-    pt->setBackgroundColor((red << 16) + (green << 8) + blue); // #RRGGBB формат
+    pt->setBackgroundColor((red << 16) + (green << 8) + blue,   // #RRGGBB формат
+            data->getSettings()->getBackgroudTransparent());    // прозрачность
 }
 
 void MainTask::moveTasksToThreads(uint key, Alg *alg, PrintTask *printTask)
@@ -222,7 +223,6 @@ void MainTask::slotStartTask(ALGS algType, uint sizeWindow, uint startLevel, uin
 //        connect(this, SIGNAL(setInterval(QRectF)), alg, SLOT(setInterval(QRectF)));
 
 
-
         // Установим нач значения
         emit setVector(vecCoefs);
 
@@ -230,12 +230,11 @@ void MainTask::slotStartTask(ALGS algType, uint sizeWindow, uint startLevel, uin
         PrintTask * pt = new PrintTask();
 
         // Создадим изображение для отрисовки
+        setPrintColors(pt);
         pt->newImage(sizeWindow, sizeWindow);
 
         connect(alg, SIGNAL(pixelFound(qint64,qint64)),
                 pt, SLOT(setPixel(qint64,qint64)));
-
-        setPrintColors(pt);
 
 
         moveTasksToThreads(key, alg, pt);

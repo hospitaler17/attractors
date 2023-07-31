@@ -15,67 +15,67 @@ public:
     explicit Settings(QObject *parent = nullptr);
     ~Settings();
 
-    QSettings::Status openSettings(QString filename);
+    QSettings::Status openSettings(const QString &filename);
 
     // Pixel Color
-    void    setRedColorPixel(quint8 red);
-    quint8  getRedColorPixel();
+    void    setRedColorPixel(const quint8 &red);
+    quint8  getRedColorPixel() const;
 
-    void    setGreenColorPixel(quint8 green);
-    quint8  getGreenColorPixel();
+    void    setGreenColorPixel(const quint8 &green);
+    quint8  getGreenColorPixel() const;
 
-    void    setBlueColorPixel(quint8 blue);
-    quint8  getBlueColorPixel();
+    void    setBlueColorPixel(const quint8 &blue);
+    quint8  getBlueColorPixel() const;
 
     // Background Color
-    void    setRedColorBackground(quint8 red);
-    quint8  getRedColorBackground();
+    void    setRedColorBackground(const quint8 &red);
+    quint8  getRedColorBackground() const;
 
-    void    setGreenColorBackground(quint8 green);
-    quint8  getGreenColorBackground();
+    void    setGreenColorBackground(const quint8 &green);
+    quint8  getGreenColorBackground() const;
 
-    void    setBlueColorBackground(quint8 blue);
-    quint8  getBlueColorBackground();
+    void    setBlueColorBackground(const quint8 &blue);
+    quint8  getBlueColorBackground() const;
 
     // Last work settings
-    void    setLastMethod(ALGS value);
-    ALGS    getLastMethod();
+    void    setLastMethod(const ALGS &value);
+    ALGS    getLastMethod() const;
 
-    void    setLastCoefPath(QString value);
-    QString getLastCoefPath();
+    void    setLastCoefPath(const QString &value);
+    QString getLastCoefPath() const;
 
-    void    setLastProbPath(QString value);
-    QString getLastProbPath();
+    void    setLastProbPath(const QString &value);
+    QString getLastProbPath() const;
 
-    void    setLastIsMonocristal(bool value);
-    bool    getLastIsMonocristal();
+    void    setLastIsMonocristal(const bool &value);
+    bool    getLastIsMonocristal() const;
 
-    void    setLastIsMultipleBuilds(bool value);
-    bool    getLastIsMultipleBuilds();
+    void    setLastIsMultipleBuilds(const bool &value);
+    bool    getLastIsMultipleBuilds() const;
 
-    void    setLastInterval(uint value);
-    uint    getLastInterval();
+    void    setLastInterval(const uint &value);
+    uint    getLastInterval() const;
 
-    void    setLastIntervalMaximum(uint value);
-    uint    getLastIntervalMaximum();
+    void    setLastIntervalMaximum(const uint &value);
+    uint    getLastIntervalMaximum() const;
 
-    void    setLastSizeWindowX(uint value);
-    uint    getLastSizeWindowX();
+    void    setLastSizeWindowX(const uint &value);
+    uint    getLastSizeWindowX() const;
 
-    void    setLastX1(qreal value);
-    qreal   getLastX1();
+    void    setLastX1(const qreal &value);
+    qreal   getLastX1() const;
 
-    void    setLastX2(qreal value);
-    qreal   getLastX2();
+    void    setLastX2(const qreal &value);
+    qreal   getLastX2() const;
 
-    void    setLastY1(qreal value);
-    qreal   getLastY1();
+    void    setLastY1(const qreal &value);
+    qreal   getLastY1() const;
 
-    void    setLastY2(qreal value);
-    qreal   getLastY2();
+    void    setLastY2(const qreal &value) const;
+    qreal   getLastY2() const;
 
-
-
+    void    setBackgroudTransparent(const bool &value);
+    bool    getBackgroudTransparent() const ;
 
 
 

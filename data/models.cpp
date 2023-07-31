@@ -3,7 +3,6 @@
 Models::Models(QObject *parent)
     : QObject{parent}
 {
-    _backgroundColor = QColor(150,150,150);
     initModel();
 }
 
@@ -34,9 +33,15 @@ void Models::clearMultipleModel()
     modelMultipleBuild->clear();
 }
 
+QPixmap Models::getImageByName(const QString &name) const
+{
+    return _images.value(name);
+}
+
 void Models::addImage(QImage img, uint level, uint size, uint window, QRectF worldWindow)
 {
     int currentRow = modelMultipleBuild->rowCount();
+    QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss(zzz)") + QString(".PNG");
     for(int i = 0; i < MMB_SIZE; ++i)
     {
         if(i == MMC_NUMBER)
@@ -50,15 +55,14 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
         else if (i == MMC_PICTURE)
         {
             QVariant varImg = QVariant(img);
-
+            _images.insert(name, QPixmap(varImg.value<QPixmap>()));
+            img = img.scaled(100, 100, Qt::KeepAspectRatio);
+            varImg = QVariant(img);
             modelMultipleBuild->setData(modelMultipleBuild->index(currentRow, MMC_PICTURE),
                                         varImg, Qt::DecorationRole);
-
-
         }
         else if (i == MMC_NAME)
         {
-            QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd_hh-mm-ss(zzz)") + QString(".PNG");
             QStandardItem * newRowName = new QStandardItem(name);
             newRowName->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_NAME, newRowName);
@@ -105,10 +109,9 @@ int Models::saveImageInFile(QModelIndex ind)
         return CANNOT_CREATE_FILE;
     dir.cd(path);
 
-    QPixmap pixmap = modelMultipleBuild->data(modelMultipleBuild->index(ind.row(), MMC_PICTURE), Qt::DecorationRole).value<QPixmap>();
     QString filename = modelMultipleBuild->data(modelMultipleBuild->index(ind.row(), MMC_NAME)).toString();
 
-    if( !pixmap.save(filename, "PNG", 100) )
+    if( !getImageByName(filename).save(filename, "PNG", 100) )
         return CANNOT_CREATE_FILE;
     return GOOD;
 }

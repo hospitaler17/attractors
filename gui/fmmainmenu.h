@@ -93,6 +93,8 @@ private slots:
 
     void on_pb_view_selected_clicked();
 
+    void on_cb_without_background_stateChanged(int arg1);
+
 signals:
     /// single
     void startSingleAlg(ALGS,uint,uint,uint);
