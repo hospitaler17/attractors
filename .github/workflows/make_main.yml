@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build project on ${{ matrix.os }}
+    name: Build project on ${{ matrix.os }} with ${{ matrix.qt }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
