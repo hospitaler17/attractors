@@ -19,7 +19,12 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
+        aqtversion: '==3.1.*'
         version: ${{ matrix.qt }}
+        host: 'windows'
+        target: 'desktop'
+        arch: 'win64_mingw'
+        modules: 'qt3d qtactiveqt qtcharts qtconnectivity qtdatavis3d qtimageformats qtlottie qtmultimedia qtnetworkauth qtpositioning qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtvirtualkeyboard qtwebchannel qtwebsockets qtwebview debug_info qt5compat qtquick3d qtquicktimeline qtshadertools'
     - name: qmake
       run: qmake
     - name: make
