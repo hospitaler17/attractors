@@ -12,6 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        qt: ['6.2.*']
         os: [ubuntu-latest]
 
     steps:
@@ -19,8 +20,8 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.2.*'
-    - name: qmake 
+        version: ${{ matrix.qt }}
+    - name: qmake
       run: qmake
-    - name: make -j4 all
-      run: make 
+    - name: make
+      run: make -j4 all
