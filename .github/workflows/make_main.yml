@@ -8,12 +8,12 @@ on:
 
 jobs:
   build:
-    name: Build project on ${{ matrix.os }} with ${{ matrix.qt }}
+    name: Build project on ${{ matrix.os }} with qt ${{ matrix.qt }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         qt: ['6.2.*']
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v3
@@ -24,4 +24,4 @@ jobs:
     - name: qmake
       run: qmake
     - name: make
-      run: make -j4 all
+      run: make all
