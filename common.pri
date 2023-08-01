@@ -1,4 +1,4 @@
-OBJECTS_DIR = .build/obj
-MOC_DIR = .build/moc
-UI_DIR = .build/ui
+OBJECTS_DIR = .build$${LIB_SUFFIX}/obj
+MOC_DIR = .build$${LIB_SUFFIX}/moc
+UI_DIR = .build$${LIB_SUFFIX}/ui
 

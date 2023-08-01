@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v3
@@ -20,7 +20,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.2.*'
-    - name: qmake
+    - name: qmake 
       run: qmake
-    - name: make
+    - name: make -j4 all
       run: make 
