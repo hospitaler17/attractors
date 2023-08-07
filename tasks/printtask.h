@@ -31,13 +31,13 @@ public slots:
 
 
 private:
-    QString path;               /*!< Путь каталога */
-    QImage * image;             /*!< Изображение */
-    uint color;                 /*!< Цвет пикселя */
-    uint backgroundColor;       /*!< Цвет фона */
-    uint borderX;               /*!< Размер изображения по X */
-    uint borderY;               /*!< Размер изображения по Y */
-    bool m_isTransparent;       /*!< Прозрачноть фона */
+    QString path  = "images";       /*!< Путь каталога */
+    QImage * image;                 /*!< Изображение */
+    uint color = 0xffffff;          /*!< Цвет пикселя */
+    uint backgroundColor = 0x000000;/*!< Цвет фона */
+    uint borderX = 0;               /*!< Размер изображения по X */
+    uint borderY = 0;               /*!< Размер изображения по Y */
+    bool m_isTransparent = true;    /*!< Прозрачноть фона */
 };
 
 #endif // PRINTTASK_H

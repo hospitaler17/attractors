@@ -31,13 +31,13 @@ private:
     QHash<uint, PrintTask*> hashPaintTask;
     QHash<uint, QThread*>   hashThread;
 
-    QRectF _interval;                   // окно
+    QRectF _interval;                   //!< окно
 
-    uint sizeCoefs;                     // Размерность вектора аффинных коэффицинтов
+    uint sizeCoefs;                     //!< Размерность вектора аффинных коэффицинтов
     uint currentLevel;
 
-    QVector<double> vecCoefs;           // Вектор аффинных коэффициентов
-    QVector<double> vecProbability;     // Вектор вероятностных коэффициентов
+    QVector<double> vecCoefs;           //!< Вектор аффинных коэффициентов
+    QVector<double> vecProbability;     //!< Вектор вероятностных коэффициентов
 
     int  getVectorFromFile(QString path, uint &size, QVector<double> &vector);
 
@@ -51,7 +51,7 @@ public slots:
     bool processLine(QByteArray line, QVector<double> &vector);
     int  sumVector(QVector<double> vec);
 
-    int slotInitVectorCoefs(QString pathToCoef);    // Загрузка вектора коэфициэнтов из файлов
+    int slotInitVectorCoefs(QString pathToCoef);    //!< Загрузка вектора коэфициэнтов из файлов
     int slotInitVectorProbability(QString pathToProbability, bool isMonocristal);
     void setInterval(QRectF interval) { _interval = interval; }
 

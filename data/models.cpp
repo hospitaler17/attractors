@@ -88,11 +88,12 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
         }
         else if (i == MMC_WORLD_WINDOW)
         {
-            QString text = QString::number(worldWindow.topLeft().rx(), 'f') + tr(";") +
-                    QString::number(worldWindow.topLeft().ry(), 'f') + tr(";") +
-                    QString::number(worldWindow.bottomRight().rx(), 'f') + tr(";") +
-                    QString::number(worldWindow.bottomRight().ry(), 'f');
+            QString text = QString::number(worldWindow.topLeft().rx(), 'f', 3) + tr(";") +
+                    QString::number(worldWindow.topLeft().ry(), 'f', 3) + tr(";") +
+                    QString::number(worldWindow.bottomRight().rx(), 'f', 3) + tr(";") +
+                    QString::number(worldWindow.bottomRight().ry(), 'f', 3);
             QStandardItem * newRowWorldWindow = new QStandardItem(text);
+
             newRowWorldWindow->setBackground(QBrush(_backgroundColor));
             modelMultipleBuild->setItem(currentRow, MMC_WORLD_WINDOW, newRowWorldWindow);
         }

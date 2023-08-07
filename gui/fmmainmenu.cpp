@@ -339,6 +339,9 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
 
     // Инициализация векторов
     result = taskErrorHandler(emit signalInitVectorCoef(ui->le_pathToCoef->text()));
+    if(result != GOOD) return;
+    result = taskErrorHandler(emit signalInitVectorProb(ui->le_pathToCoef_probability->text(), ui->cb_monocristal->isChecked()));
+    if(result != GOOD) return;
 
     // Старт расчета
     if( !ui->cb_multipleBuilding->isChecked() )
@@ -351,7 +354,6 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
     }
     else
     {
-        result = taskErrorHandler(emit signalInitVectorProb(ui->le_pathToCoef_probability->text(), ui->cb_monocristal->isChecked()));
         if(result == GOOD)
             emit startMultipleAlg(currentAlg,
                                   ui->le_sizeWindow->text().toUInt(),

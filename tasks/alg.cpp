@@ -1,6 +1,6 @@
 #include "alg.h"
 
-Alg::Alg(uint key, QObject *parent)
+Alg::Alg(const uint &key, QObject *parent)
     : QObject{parent}
 {
     setKey(key);
@@ -9,7 +9,7 @@ Alg::Alg(uint key, QObject *parent)
     y1 = -3; y2 = 3;
 }
 
-void Alg::DSIF(uint size, uint sizeWindow, uint level)
+void Alg::DSIF(const uint &size, const uint &sizeWindow, const uint &level)
 {
     /// ВХОД
     // C        - аффинорный коэфициенты
@@ -26,20 +26,20 @@ void Alg::DSIF(uint size, uint sizeWindow, uint level)
 
     uint i, j, k, l, buffX, buffY = 1;
 
-    double ** matrixS = (double**) malloc (sizeof (double*) * sizeWindow);
+    qreal ** matrixS = (qreal**) malloc (sizeof (qreal*) * sizeWindow);
     for (i = 0; i < sizeWindow; i++)
     {
-        matrixS[i] = (double*) malloc (sizeof (double) * sizeWindow);
+        matrixS[i] = (qreal*) malloc (sizeof (qreal) * sizeWindow);
         for(j = 0; j < sizeWindow; ++j)
         {
             matrixS[i][j] = 0.0;
         }
     }
 
-    double ** matrixT = (double**) malloc (sizeof (double*) * sizeWindow);
+    qreal ** matrixT = (qreal**) malloc (sizeof (qreal*) * sizeWindow);
     for (i = 0; i < sizeWindow; i++)
     {
-        matrixT[i] = (double*) malloc (sizeof (double) * sizeWindow);
+        matrixT[i] = (qreal*) malloc (sizeof (qreal) * sizeWindow);
         for(j = 0; j < sizeWindow; ++j)
         {
             if(i == j)
@@ -54,12 +54,12 @@ void Alg::DSIF(uint size, uint sizeWindow, uint level)
     }
 
     // Афинные коэффициенты
-    double ** matrix = (double**) malloc (sizeof (double*) * size);
+    qreal ** matrix = (qreal**) malloc (sizeof (qreal*) * size);
     {
         uint counter = 0;
         for (i = 0; i < size; ++i)
         {
-            matrix[i] = (double*) malloc (sizeof (double) * SIZE_COEF);
+            matrix[i] = (qreal*) malloc (sizeof (qreal) * SIZE_COEF);
             for(j = 0; j < SIZE_COEF; ++j)
             {
                 matrix[i][j] = vec.at(counter);
@@ -133,7 +133,7 @@ void Alg::DSIF(uint size, uint sizeWindow, uint level)
     return ;
 }
 
-void Alg::RSIF(uint size, uint sizeWindow, uint level)
+void Alg::RSIF(const uint &size, const uint &sizeWindow, const uint &level)
 {
     /// ВХОД
     // matrix   - аффинорный коэфициенты
@@ -146,16 +146,16 @@ void Alg::RSIF(uint size, uint sizeWindow, uint level)
     _level = level;
     _sizeWindow = sizeWindow;
 
-    quint32 i, j, k, x = 0, y = 0;
+    quint32 i = 0, j = 0, k = 0, x = 0, y = 0;
     quint32 x0 = 0, y0 = 0;
 
     // Аффинные коэффициенты
-    double ** matrix = (double**) malloc (sizeof (double*) * size);
+    qreal ** matrix = (qreal**) malloc (sizeof (qreal*) * size);
     {
         uint counter = 0;
         for (i = 0; i < size; ++i)
         {
-            matrix[i] = (double*) malloc (sizeof (double) * SIZE_COEF);
+            matrix[i] = (qreal*) malloc (sizeof (qreal) * SIZE_COEF);
             for(j = 0; j < SIZE_COEF; ++j)
             {
                 matrix[i][j] = vec.at(counter);
@@ -168,22 +168,21 @@ void Alg::RSIF(uint size, uint sizeWindow, uint level)
 
     /// Алгоритм РСИФ
     QRandomGenerator *rg = QRandomGenerator::global();
-    for (i = 0; i < 100; i++)
-    {
-        if( !vecProbability.isEmpty() )
-        {
-            k = getProbabilityNumber(rg->bounded(0, 100));
-        }
-        else
-        {
-            k = rg->bounded(0, (int) size);
-        }
-        x = matrix[k][0] * x0 + matrix[k][1] * y0 + matrix[k][4];
-        y = matrix[k][2] * x0 + matrix[k][3] * y0 + matrix[k][5];
-        x0 = x;
-        y0 = y;
-
-    }
+//    for (i = 0; i < 100; i++)
+//    {
+//        if( !vecProbability.isEmpty() )
+//        {
+//            k = getProbabilityNumber(rg->bounded(0, 100));
+//        }
+//        else
+//        {
+//            k = rg->bounded(0, (int) size);
+//        }
+//        x = matrix[k][0] * x0 + matrix[k][1] * y0 + matrix[k][4];
+//        y = matrix[k][2] * x0 + matrix[k][3] * y0 + matrix[k][5];
+//        x0 = x;
+//        y0 = y;
+//    }
 
     for(i = 0; i < level * 1000; i++)
     {
@@ -217,18 +216,18 @@ void Alg::RSIF(uint size, uint sizeWindow, uint level)
     vecProbability.clear();
 }
 
-void Alg::setVector(QVector<double> vector)
+void Alg::setVector(const QVector<qreal> &vector)
 {
     vec = vector;
 }
 
-void Alg::setInterval(QRectF rect)
+void Alg::setInterval(const QRectF &rect)
 {
     x1 = rect.topLeft().rx(); x2 = rect.bottomRight().rx();
     y1 = rect.topLeft().ry(); y2 = rect.bottomRight().ry();
 }
 
-void Alg::setVectorProbability(QVector<double> vector)
+void Alg::setVectorProbability(const QVector<qreal> &vector)
 {
     vecProbability = vector;
 }
@@ -259,16 +258,16 @@ uint Alg::key() const
     return _key;
 }
 
-void Alg::setKey(uint newKey)
+void Alg::setKey(const uint &newKey)
 {
     _key = newKey;
 }
 
-void Alg::convertCoefs(uint &size, uint &sizeWindow, double **matrix)
+void Alg::convertCoefs(const uint &size, const uint &sizeWindow, qreal **matrix)
 {
-    double M11, M22, w1, w2;
-    double i1 = 0; double i2 = sizeWindow;
-    double j1 = sizeWindow; double j2 = 0;
+    qreal M11, M22, w1, w2;
+    qreal i1 = 0; qreal i2 = sizeWindow;
+    qreal j1 = sizeWindow; qreal j2 = 0;
 
     for(uint i = 0; i < size; ++i)
     {

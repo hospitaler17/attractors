@@ -12,9 +12,9 @@ class Alg : public QObject
 {
     Q_OBJECT
 public:
-    explicit Alg(uint key, QObject *parent = nullptr);
+    explicit Alg(const uint &key, QObject *parent = nullptr);
 
-    void setKey(uint newKey);
+    void setKey(const uint &newKey);
 
     uint key() const;
 
@@ -27,35 +27,37 @@ public:
     QRectF interval() const;
 
 public slots:
-    void DSIF(uint size, uint sizeWindow, uint level);
-    void RSIF(uint size, uint sizeWindow, uint level);
+    void DSIF(const uint &size, const uint &sizeWindow, const uint &level);
+    void RSIF(const uint &size, const uint &sizeWindow, const uint &level);
 
-    void setVector(QVector<double>);
-    void setInterval(QRectF);
-    void setVectorProbability(QVector<double>);
+    void setVector(const QVector<qreal> &vector);
+    void setInterval(const QRectF &);
+    void setVectorProbability(const QVector<qreal> &vector);
 
 signals:
-    void DSIFcomplete(uint);
-    void RSIFcomplete(uint);
-    void pixelFound(qint64,qint64);
+    void DSIFcomplete(uint);        //!< Построение ДСИФ завершено
+    void RSIFcomplete(uint);        //!< Построение РСИФ завершено
+    void pixelFound(qint64,qint64); //!< Найдена точка аттрактора (пиксель)
 
 private:
-    uint _sizeWindow;
-    uint _size;
-    uint _level;
-    uint _key;
-    qreal x1; qreal x2;
-    qreal y1; qreal y2;
+    uint _sizeWindow;       //!< Размер квадратного окна
+    uint _size;             //!< Число аффинных отображений
+    uint _level;            //!< Число итераций
+    uint _key;              //!< Ключ-номер задачи
+    qreal x1;               //!<
+    qreal x2;               //!<
+    qreal y1;               //!<
+    qreal y2;               //!<
 
     int localProbability;
 
     int counter = 0;
     int probability = 0;
 
-    QVector<double> vec;
-    QVector<double> vecProbability;
+    QVector<qreal> vec;
+    QVector<qreal> vecProbability;
 
-    void convertCoefs(uint &size, uint &sizeWindow, double ** matrix);
+    void convertCoefs(const uint &size, const uint &sizeWindow, qreal ** matrix);
     int getProbabilityNumber(int rundomNumber); // число number =  0 - 100
 };
 

@@ -3,15 +3,13 @@
 PrintTask::PrintTask(QObject *parent)
     : QObject{parent}
 {
-    path = "images";
-    borderX = 0;
-    borderY = 0;
-    color = 0xffffff;
+    image = new QImage();
 }
 
 PrintTask::~PrintTask()
 {
-
+    if(image)
+        delete image;
 }
 
 void PrintTask::newImage(uint sizeX, uint sizeY)
@@ -20,7 +18,7 @@ void PrintTask::newImage(uint sizeX, uint sizeY)
     borderY = sizeY;
     image = new QImage(sizeX, sizeY, QImage::Format_RGB32);
 
-    if( !m_isTransparent)
+    if( !m_isTransparent )
     {
         image->fill(QColor(backgroundColor));
     }
@@ -65,7 +63,7 @@ bool PrintTask::writeImage(QString name)
     {
         filename = name;
     }
-    qDebug() << "save filename == " << filename;
+    qDebug() << "saving filename == " << filename;
     return image->save(filename, "PNG");
 }
 

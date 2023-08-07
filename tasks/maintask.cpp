@@ -72,6 +72,8 @@ int MainTask::getVectorFromFile(QString path, uint &size, QVector<double> &vecto
         return CANNOT_OPEN_FILE;
     }
 
+    vector.clear();
+
     QByteArray line;
     while (!file.atEnd())
     {
@@ -124,12 +126,14 @@ void MainTask::moveTasksToThreads(uint key, Alg *alg, PrintTask *printTask)
 void MainTask::removeTasksAt(uint key)
 {
     hashThread.value(key)->exit();
-//    hashThread.value(key)->terminate();
     hashThread.value(key)->wait();
     hashThread.value(key)->deleteLater();
 
+    delete hashAlg.value(key);
+    delete hashPaintTask.value(key);
+
     hashAlg.remove(key);
-    hashAlg.remove(key);
+    hashPaintTask.remove(key);
     hashThread.remove(key);
 }
 
@@ -141,6 +145,7 @@ int MainTask::slotInitVectorCoefs(QString pathToCoef)
 
 int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocristal)
 {
+    //FIXME: из-за того, что sizeVecProb = 1 в else происходит бардак
     uint sizeVecProb = 1;
     if(!pathToProbability.isEmpty() && !isMonocristal) // только если РСИФ
     {
@@ -157,8 +162,8 @@ int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocr
     }
     else /*if(isMonocristal)*/
     {
-        QVector<double> vecDet; // temperary
-        double sum_s2j = 0.0;
+        QVector<qreal> vecDet; // temperary
+        qreal sum_s2j = 0.0;
         uint i;
         for(i = 0; i < sizeVecProb; i++)
         {
@@ -215,13 +220,8 @@ void MainTask::slotStartTask(ALGS algType, uint sizeWindow, uint startLevel, uin
 
         // setters for algs
         alg->setVector(vecCoefs);
-        if(!vecProbability.isEmpty()) alg->setVectorProbability(vecProbability);
+        if(!vecProbability.isEmpty())   alg->setVectorProbability(vecProbability);
         alg->setInterval(_interval);
-
-//        connect(this, SIGNAL(setVector(QVector<double>)), alg, SLOT(setVector(QVector<double>)));
-//        connect(this, SIGNAL(setVectorProb(QVector<double>)), alg, SLOT(setVectorProbability(QVector<double>)));
-//        connect(this, SIGNAL(setInterval(QRectF)), alg, SLOT(setInterval(QRectF)));
-
 
         // Установим нач значения
         emit setVector(vecCoefs);
@@ -255,7 +255,5 @@ void MainTask::slotStartTask(ALGS algType, uint sizeWindow, uint startLevel, uin
         }
         disconnect(this, SIGNAL(signalStartDSIF(uint,uint,uint)), alg, SLOT(DSIF(uint,uint,uint)));
         disconnect(this, SIGNAL(signalStartRSIF(uint,uint,uint)), alg, SLOT(RSIF(uint,uint,uint)));
-
-
     }
 }
