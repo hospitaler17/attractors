@@ -62,6 +62,9 @@ void fmMainMenu::setData(Data *data)
             this, SIGNAL(signalOpenPicture(QModelIndex)));
 
     ui->tabWidget->setCurrentIndex(0);
+
+    connect(d->getModels()->getMultipleModel(), SIGNAL(itemChanged(QStandardItem*)),
+            this, SLOT(slotOnItemChanged(QStandardItem*)));
 }
 
 void fmMainMenu::algChanged(ALGS alg)
@@ -365,10 +368,6 @@ void fmMainMenu::on_pb_startSingleAlg_clicked()
 
 void fmMainMenu::initLastWorksSettings()
 {
-    d->getSettings()->getLastMethod()==ALGS::DSIF? ui->rb_DSIF->setChecked(true):
-                                                   ui->rb_RSIF->setChecked(true);
-    ui->cb_monocristal->setChecked(d->getSettings()->getLastIsMonocristal());
-
     ui->le_sizeWindow->setText(QString::number(d->getSettings()->getLastSizeWindowX()));
 
     ui->le_level->setText(QString::number(d->getSettings()->getLastInterval()));
@@ -458,5 +457,13 @@ void fmMainMenu::on_pb_view_selected_clicked()
 void fmMainMenu::on_cb_without_background_stateChanged(int arg1)
 {
     d->getSettings()->setBackgroudTransparent(arg1==0?false:true);
+}
+
+void fmMainMenu::slotOnItemChanged(QStandardItem *item)
+{
+    Q_UNUSED(item);
+
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 

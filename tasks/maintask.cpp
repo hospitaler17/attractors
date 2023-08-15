@@ -145,14 +145,14 @@ int MainTask::slotInitVectorCoefs(QString pathToCoef)
 
 int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocristal)
 {
-    //FIXME: из-за того, что sizeVecProb = 1 в else происходит бардак
+    vecProbability.clear();
     uint sizeVecProb = 1;
-    if(!pathToProbability.isEmpty() && !isMonocristal) // только если РСИФ
+    if(!isMonocristal) // только если РСИФ
     {
         int res = getVectorFromFile(pathToProbability, sizeVecProb, vecProbability);
         if(res != GOOD) // Вышли из алгоритма если нет файла коэфициентов
         {
-            return res;
+            return GOOD;
         }
 
         if(sumVector(vecProbability) != 1)
@@ -165,19 +165,19 @@ int MainTask::slotInitVectorProbability(QString pathToProbability, bool isMonocr
         QVector<qreal> vecDet; // temperary
         qreal sum_s2j = 0.0;
         uint i;
-        for(i = 0; i < sizeVecProb; i++)
+        for(i = 0; i < sizeCoefs; i++)
         {
             vecDet.append(abs((vecCoefs.at(0+SIZE_COEF*i) * vecCoefs.at(3+SIZE_COEF*i)) - (vecCoefs.at(1+SIZE_COEF*i) * vecCoefs.at(2+SIZE_COEF*i))));
 
             sum_s2j += vecDet.at(i);
         }
-        for(i = 0; i < sizeVecProb; i++)
+        for(i = 0; i < sizeCoefs; i++)
         {
             vecProbability.append(vecDet.at(i)/sum_s2j);
         }
         return GOOD;
     }
-    return -1;
+    return GOOD;
 }
 
 void MainTask::slotOnAlgComplete(uint key)

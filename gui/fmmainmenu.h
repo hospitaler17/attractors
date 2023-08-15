@@ -61,7 +61,7 @@ public slots:
 
     void slotOnChangeBuildsType(int index);
 private slots:
-    /// single page
+    // single page
     void on_tb_getPath_clicked();                   // кнопка "Путь до файла с афинных коэф"
     void on_tb_getPath_probability_clicked();       // кнопка "Путь до файла с вероятностных коэф"
 
@@ -73,7 +73,7 @@ private slots:
 
     void saveLastWorksSettings();
 
-    /// settings page
+    // settings page
     void initColors();
     void onColorChange();
     void onColorBackgroundChange();
@@ -81,7 +81,7 @@ private slots:
     void on_tb_imageColor_clicked();
     void on_tb_backgroundColor_clicked();
 
-    ///  common slots
+    //  common slots
     void on_rb_RSIF_clicked();
     void on_rb_DSIF_clicked();
 
@@ -95,6 +95,7 @@ private slots:
 
     void on_cb_without_background_stateChanged(int arg1);
 
+    void slotOnItemChanged(QStandardItem *item);
 signals:
     /// single
     void startSingleAlg(ALGS,uint,uint,uint);

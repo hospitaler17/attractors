@@ -168,23 +168,7 @@ void Alg::RSIF(const uint &size, const uint &sizeWindow, const uint &level)
 
     /// Алгоритм РСИФ
     QRandomGenerator *rg = QRandomGenerator::global();
-//    for (i = 0; i < 100; i++)
-//    {
-//        if( !vecProbability.isEmpty() )
-//        {
-//            k = getProbabilityNumber(rg->bounded(0, 100));
-//        }
-//        else
-//        {
-//            k = rg->bounded(0, (int) size);
-//        }
-//        x = matrix[k][0] * x0 + matrix[k][1] * y0 + matrix[k][4];
-//        y = matrix[k][2] * x0 + matrix[k][3] * y0 + matrix[k][5];
-//        x0 = x;
-//        y0 = y;
-//    }
-
-    for(i = 0; i < level * 1000; i++)
+    for (i = 0; i < 100; i++)
     {
         if( !vecProbability.isEmpty() )
         {
@@ -194,13 +178,28 @@ void Alg::RSIF(const uint &size, const uint &sizeWindow, const uint &level)
         {
             k = rg->bounded(0, (int) size);
         }
+        x = matrix[k][0] * x0 + matrix[k][1] * y0 + matrix[k][4];
+        y = matrix[k][2] * x0 + matrix[k][3] * y0 + matrix[k][5];
+        x0 = x;
+        y0 = y;
+    }
+
+    for(i = 0; i < level * 1000; i++)
+    {
+        if( !vecProbability.isEmpty() )
+        {
+            k = getProbabilityNumber(rg->bounded(0, 100));
+        }
+        else
+        {
+            k = rg->bounded(0, (int) size-1);
+        }
 
         x = matrix[k][0] * x0 + matrix[k][1] * y0 + matrix[k][4];
         y = matrix[k][2] * x0 + matrix[k][3] * y0 + matrix[k][5];
 
         if(x < sizeWindow && y < sizeWindow)
             emit pixelFound(x, y);
-
         x0 = x;
         y0 = y;
     }
