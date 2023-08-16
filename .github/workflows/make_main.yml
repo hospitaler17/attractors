@@ -1,4 +1,4 @@
-name: Build on ubuntu CI
+name: Test on build CI
 
 on:
   push:
@@ -7,19 +7,40 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_ubuntu:
     name: Build project on ubuntu with qt ${{ matrix.qt }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         qt: ['6.2.*']
-
     steps:
     - uses: actions/checkout@v3
     - name: Install Qt
       uses: jurplel/install-qt-action@v3
       with:
         version: ${{ matrix.qt }}
+    - name: qmake
+      run: qmake
+    - name: make
+      run: make all
+      
+  build_windows:
+    name: Build project on windows with qt ${{ matrix.qt }}
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        qt: ['6.2.*']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3
+      with:
+        aqtversion: '==3.1.*'
+        version: ${{ matrix.qt }}
+        host: 'windows'
+        target: 'desktop'
+        arch: 'win64_mingw'
+        modules: 'qt3d qtactiveqt qtcharts qtconnectivity qtdatavis3d qtimageformats qtlottie qtmultimedia qtnetworkauth qtpositioning qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtvirtualkeyboard qtwebchannel qtwebsockets qtwebview debug_info qt5compat qtquick3d qtquicktimeline qtshadertools'
     - name: qmake
       run: qmake
     - name: make
