@@ -20,4 +20,4 @@ jobs:
      - uses: actions/upload-artifact@v3
        with:
          name: version
-         path: attractors/release/*
+         path: release/*.exe
