@@ -19,5 +19,9 @@ jobs:
        run: make
      - uses: actions/upload-artifact@v3
        with:
-         name: version
-         path: release/*.exe
+         name: version ${{ Sys.Date() }}
+         path: |
+           release/*.exe
+           coefs
+           LICENSE
+           README.md
