@@ -15,6 +15,8 @@ public:
     explicit Settings(QObject *parent = nullptr);
     ~Settings();
 
+    void sync(){if(qsettings) qsettings->sync();}
+
     QSettings::Status openSettings(const QString &filename);
 
     // Pixel Color

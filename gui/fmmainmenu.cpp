@@ -58,6 +58,8 @@ void fmMainMenu::setData(Data *data)
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    ui->tableView->hideColumn(MMC_NAME);
+
     connect(ui->tableView, SIGNAL(doubleClicked(QModelIndex)),
             this, SIGNAL(signalOpenPicture(QModelIndex)));
 

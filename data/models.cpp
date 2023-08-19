@@ -6,6 +6,13 @@ Models::Models(QObject *parent)
     initModel();
 }
 
+Models::~Models()
+{
+    if(modelMultipleBuild)
+        delete modelMultipleBuild;
+
+}
+
 void Models::initModel()
 {
     modelMultipleBuild = new QStandardItemModel();
@@ -48,8 +55,9 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
         {
             QStandardItem * newRowCount = new QStandardItem();
             newRowCount->setCheckable(true);
-            newRowCount->setCheckState(Qt::Unchecked);
+            newRowCount->setCheckState(Qt::Checked);
             newRowCount->setBackground(QBrush(_backgroundColor));
+            newRowCount->setText(name);
             modelMultipleBuild->setItem(currentRow, MMC_NUMBER, newRowCount);
         }
         else if (i == MMC_PICTURE)
@@ -104,7 +112,7 @@ void Models::addImage(QImage img, uint level, uint size, uint window, QRectF wor
 int Models::saveImageInFile(QModelIndex ind)
 {
     /// pictures/datetime/
-    QString path = tr("pictures/") + QDateTime::currentDateTime().toString("yyyy-MM-dd/");
+    QString path = tr("pictures/") + QDateTime::currentDateTime().toString("yyyy-MM-dd");
     QDir dir;
     if( !dir.exists(path) && !dir.mkpath(path))
         return CANNOT_CREATE_FILE;
@@ -114,6 +122,10 @@ int Models::saveImageInFile(QModelIndex ind)
 
     if( !getImageByName(filename).save(filename, "PNG", 100) )
         return CANNOT_CREATE_FILE;
+
+    QFile file(filename);
+    file.rename(path + "/" + filename);
+
     return GOOD;
 }
 

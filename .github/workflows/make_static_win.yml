@@ -19,7 +19,7 @@ jobs:
        run: make
      - uses: actions/upload-artifact@v3
        with:
-         name: version {Sys.Date()}
+         name: version
          path: |
            release/*.exe
            coefs

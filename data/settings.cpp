@@ -26,7 +26,7 @@ void Settings::setRedColorPixel(const quint8 &red)
 
 quint8 Settings::getRedColorPixel() const
 {
-    return qsettings->value("pixelColor/red", 0).toInt();
+    return qsettings->value("pixelColor/red", 0xff).toInt();
 }
 
 void Settings::setGreenColorPixel(const quint8 &green)
@@ -36,7 +36,7 @@ void Settings::setGreenColorPixel(const quint8 &green)
 
 quint8 Settings::getGreenColorPixel() const
 {
-    return qsettings->value("pixelColor/green", 0).toInt();
+    return qsettings->value("pixelColor/green", 0xff).toInt();
 }
 
 void Settings::setBlueColorPixel(const quint8 &blue)
@@ -46,7 +46,7 @@ void Settings::setBlueColorPixel(const quint8 &blue)
 
 quint8 Settings::getBlueColorPixel() const
 {
-    return qsettings->value("pixelColor/blue", 0).toInt();
+    return qsettings->value("pixelColor/blue", 0xff).toInt();
 }
 
 void Settings::setRedColorBackground(const quint8 &red)
@@ -136,7 +136,7 @@ void Settings::setLastInterval(const uint &value)
 
 uint Settings::getLastInterval() const
 {
-    return qsettings->value("lastWorkSettings/lastInterval", false).toUInt();
+    return qsettings->value("lastWorkSettings/lastInterval", 5).toUInt();
 }
 
 void Settings::setLastIntervalMaximum(const uint &value)
@@ -146,7 +146,7 @@ void Settings::setLastIntervalMaximum(const uint &value)
 
 uint Settings::getLastIntervalMaximum() const
 {
-    return qsettings->value("lastWorkSettings/lastIntervalMaximum", false).toUInt();
+    return qsettings->value("lastWorkSettings/lastIntervalMaximum", 10).toUInt();
 }
 
 void Settings::setLastSizeWindowX(const uint &value)
@@ -206,7 +206,7 @@ void Settings::setBackgroudTransparent(const bool &value)
 
 bool Settings::getBackgroudTransparent() const
 {
-    return qsettings->value("lastWorkSettings/TransparentBG", false).toBool();
+    return qsettings->value("lastWorkSettings/TransparentBG", true).toBool();
 }
 
 

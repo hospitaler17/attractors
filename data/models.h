@@ -19,6 +19,7 @@ class Models : public QObject
     Q_OBJECT
 public:
     explicit Models(QObject *parent = nullptr);
+    ~Models();
 
     void clearMultipleModel();
     QStandardItemModel * getMultipleModel(){return modelMultipleBuild;}
